@@ -143,19 +143,19 @@ const featuredGames = await getCollection(
     }
 
     .about {
-        padding: 3rem 1.5rem 0;
+        padding: 1.5rem 1.5rem 0;
     }
 
     .about__container {
         max-width: 900px;
         margin: 0 auto;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 2rem;
     }
 
     .about__avatar {
-        width: 250px;
+        width: 400px;
         height: auto;
         object-fit: cover;
         flex-shrink: 0;
@@ -165,7 +165,7 @@ const featuredGames = await getCollection(
 
     .about__avatar--fixed {
         position: fixed;
-        z-index: 10;
+        z-index: -1;
     }
 
     .about__title {
@@ -173,6 +173,10 @@ const featuredGames = await getCollection(
         font-weight: 700;
         margin: 0 0 1rem;
         color: var(--text);
+    }
+
+    .about__content {
+        padding-top: 5rem;
     }
 
     .about__text {
@@ -199,7 +203,7 @@ const featuredGames = await getCollection(
     }
 
     .callout {
-        padding: 3rem 1.5rem;
+        padding: 1.5rem 1.5rem 3rem;
         text-align: center;
     }
 
@@ -210,6 +214,8 @@ const featuredGames = await getCollection(
         background-color: var(--card-bg);
         border: 1px solid var(--border);
         border-radius: 12px;
+        position: relative;
+        z-index: 1;
     }
 
     .callout__title {
