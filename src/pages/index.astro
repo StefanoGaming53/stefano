@@ -1,10 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const featuredGames = await getCollection(
+    "games",
+    (game) => game.data.featured,
+);
 ---
 
 <Layout title="Stefano Gaming" bodyClass="has-bg">
     <section class="hero">
-        <div class="hero__overlay"></div>
         <img
             src="/images/name-banner.png"
             alt="Stefano Gaming"
@@ -14,80 +19,37 @@ import Layout from "../layouts/Layout.astro";
 
     <section class="games">
         <div class="games__grid">
-            <article class="card">
-                <img
-                    src="/images/games/tales-from-dreadlight-the-morgue.png"
-                    alt="Tales From Dreadlight: The Morgue"
-                    class="card__image"
-                />
-                <h2 class="card__title">Tales From Dreadlight: The Morgue</h2>
-                <div class="card__video">
-                    <iframe
-                        src="https://www.youtube.com/embed/uwpV97Vf8S0"
-                        title="Tales From Dreadlight: The Morgue Trailer"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-                </div>
-                <a
-                    href="https://stefano-gaming.itch.io/tales-from-dreadlight-the-morgue"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="card__link"
-                >
-                    Play on itch.io
-                </a>
-            </article>
-
-            <article class="card">
-                <img
-                    src="/images/games/speak-with-screams.png"
-                    alt="Speak With Screams"
-                    class="card__image"
-                />
-                <h2 class="card__title">Speak With Screams</h2>
-                <div class="card__video">
-                    <iframe
-                        src="https://www.youtube.com/embed/lJlCHp-Ql00"
-                        title="Speak With Screams Trailer"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-                </div>
-                <a
-                    href="https://stefano-gaming.itch.io/speak-with-screams"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="card__link"
-                >
-                    Play on itch.io
-                </a>
-            </article>
-
-            <article class="card">
-                <img
-                    src="/images/games/acceptance.png"
-                    alt="Acceptance"
-                    class="card__image"
-                />
-                <h2 class="card__title">Acceptance</h2>
-                <div class="card__video">
-                    <iframe
-                        src="https://www.youtube.com/embed/I1A3MlH_v3U"
-                        title="Acceptance Trailer"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-                </div>
-                <a
-                    href="https://stefano-gaming.itch.io/acceptance"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="card__link"
-                >
-                    Play on itch.io
-                </a>
-            </article>
+            {
+                featuredGames.map((game) => (
+                    <article class="card">
+                        <img
+                            src={game.data.image}
+                            alt={game.data.title}
+                            class="card__image"
+                        />
+                        <h2 class="card__title">{game.data.title}</h2>
+                        {game.data.youtubeId && (
+                            <div class="card__video">
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${game.data.youtubeId}`}
+                                    title={`${game.data.title} Trailer`}
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen
+                                />
+                            </div>
+                        )}
+                        <a
+                            href={game.data.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="card__link"
+                        >
+                            Play on itch.io
+                        </a>
+                    </article>
+                ))
+            }
         </div>
     </section>
 </Layout>

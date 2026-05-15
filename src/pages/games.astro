@@ -1,234 +1,22 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
 
-const downloadableGames = [
-    {
-        title: "Miami's Deadline",
-        image: "/images/games/miamis-deadline.png",
-        url: "https://drive.google.com/file/d/1UiFhlH0ri-hOagqCXXp5meGh8ZNbMQti/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "CyberScape",
-        image: "/images/games/cyberscape.png",
-        url: "https://drive.google.com/file/d/11_vqLNkq-aVAyq6faA3efIeUkj2yBF_n/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Typed to death",
-        image: "/images/games/typed-to-death.png",
-        url: "https://drive.google.com/file/d/1oJX_Z_2yMUPysaR4diGEie4irHgJ5Dle/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Project Pixel",
-        image: "/images/games/project-pixel.png",
-        url: "https://drive.google.com/file/d/1RIV2WuxNI6fuUBPMKpCuZoLRN92nINEX/view?usp=share_link",
-        type: "download",
-    },
-    {
-        title: "Sigil Showdown",
-        image: "/images/games/sigil-showdown.png",
-        url: "https://drive.google.com/file/d/1hP-XYTLlSF5S4kYeMxNHMHNFfglFx-Bf/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Draw",
-        image: "/images/games/draw.png",
-        url: "https://drive.google.com/file/d/1XMJmS-VXXikjCAq38VcDxVzLde0CiQqX/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Grief",
-        image: "/images/games/grief.png",
-        url: "https://stefano-gaming.itch.io/grief",
-        type: "itch",
-    },
-    {
-        title: "Sounds From Silence",
-        image: "/images/games/sounds-from-silence.png",
-        url: "https://stefano-gaming.itch.io/sounds-from-silence",
-        type: "itch",
-    },
-    {
-        title: "Solitary Sonata",
-        image: "/images/games/solitary-sonata.png",
-        url: "https://stefano-gaming.itch.io/solitary-sonata",
-        type: "itch",
-    },
-    {
-        title: "Inverted (Remastered)",
-        image: "/images/games/inverted-remastered.png",
-        url: "https://drive.google.com/file/d/1J49NkgcNUL9Xa_VuLx11ydfxdgf1QFl5/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Pixel Party",
-        image: "/images/games/pixel-party.png",
-        url: "https://drive.google.com/file/d/18r6obhepIw_znqLMkUL6iPslov_8TAwS/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Survival of the Fittest",
-        image: "/images/games/survival-of-the-fittest.png",
-        url: "https://drive.google.com/file/d/1ogQJlzagftY9nyw1bjvDNT3ab29g-4TT/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Balls",
-        image: "/images/games/balls.png",
-        url: "https://drive.google.com/file/d/1ub53YVg9dPqa8SmcniKH_dTF0wvckw0-/view?usp=share_link",
-        type: "download",
-    },
-    {
-        title: "WACC Horror Game",
-        image: "/images/games/wacc-horror-game.png",
-        url: "https://drive.google.com/file/d/1QFSaP0yu9OomHN1IwuTSjBsI1W6mxk0h/view?usp=share_link",
-        type: "download",
-    },
-    {
-        title: "Someone's In The Shadows",
-        image: "/images/games/someones-in-the-shadows.png",
-        url: "https://stefano-gaming.itch.io/someones-in-the-shadows",
-        type: "itch",
-    },
-    {
-        title: "Acceptance",
-        image: "/images/games/acceptance.png",
-        url: "https://stefano-gaming.itch.io/acceptance",
-        type: "itch",
-    },
-    {
-        title: "Speak With Screams",
-        image: "/images/games/speak-with-screams.png",
-        url: "https://stefano-gaming.itch.io/speak-with-screams",
-        type: "itch",
-    },
-    {
-        title: "Tales From Dreadlight: The Morgue",
-        image: "/images/games/tales-from-dreadlight-the-morgue.png",
-        url: "https://stefano-gaming.itch.io/tales-from-dreadlight-the-morgue",
-        type: "itch",
-    },
-    {
-        title: "Dungeon Knight Demo",
-        image: "/images/games/dungeon-knight-demo.png",
-        url: "https://drive.google.com/file/d/1KvVFOWcxLryX6Y16BvGNcxNjcdwE0JZc/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Pixel Surgeon",
-        image: "/images/games/pixel-surgeon.png",
-        url: "https://drive.google.com/file/d/1LL1bBh31CVpIIXUHXqvXQcW6UKyAC2mZ/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Defend The Fort",
-        image: "/images/games/defend-the-fort.png",
-        url: "https://drive.google.com/file/d/1P3KscLzUNs643MgpWcddO9j81HT76a5a/view?usp=sharing",
-        type: "download",
-    },
-    {
-        title: "Space Survival",
-        image: "/images/games/space-survival.png",
-        url: "https://drive.google.com/file/d/1Nf4Eqyz87XO0c51MQeCJ-urAAULXwWSU/view?usp=share_link",
-        type: "download",
-    },
-    {
-        title: "Factory Reset (Early in Development)",
-        image: "/images/games/factory-reset.png",
-        url: "https://drive.google.com/file/d/1f4t2y5ppcYVcIgVyP9OitBCR6B-_QBSb/view?usp=share_link",
-        type: "download",
-    },
-    {
-        title: "See Through Static",
-        image: "/images/games/see-through-static.png",
-        url: "https://stefano-gaming.itch.io/see-through-static",
-        type: "itch",
-    },
-    {
-        title: "Pale Woods",
-        image: "/images/games/pale-woods.png",
-        url: "https://stefano-gaming.itch.io/pale-woods",
-        type: "itch",
-    },
-    {
-        title: "Kitty Combat",
-        image: "/images/games/kitty-combat.png",
-        url: "https://stefano-gaming.itch.io/kitty-combat",
-        type: "itch",
-    },
-];
+const allGames = await getCollection("games");
 
-const browserGames = [
-    {
-        title: "Miami's Deadline (Website Version)",
-        url: "https://liluo.io/instant-builds/70ac898b-be32-4aaa-bab3-0a0eb5b70b69",
-    },
-    {
-        title: "Dungeon Knight Demo (Website Version)",
-        url: "https://liluo.io/instant-builds/4ebf5302-d97d-4451-aebe-aa05edb9062e",
-    },
-    {
-        title: "Survival of the Fittest (Website Version)",
-        url: "https://liluo.io/instant-builds/d8648124-c87c-4963-bb59-f269724fe91e",
-    },
-    {
-        title: "CyberScape (Website Version)",
-        url: "https://liluo.io/instant-builds/ef5515b5-cc32-4f1e-8b64-422849816280",
-    },
-    {
-        title: "Pixel Party: Game Jam Version",
-        url: "https://liluo.io/stefano_gaming/pixel-party",
-    },
-    {
-        title: "A Better Place (Website Game)",
-        url: "https://games.gdevelop-app.com/game-ec64e84f-9a26-4194-ba1d-ac29d490a4d7/index.html",
-    },
-    {
-        title: "Deadzone (Website Game)",
-        url: "https://games.gdevelop-app.com/game-d6049b6b-a7b5-497b-b17d-21001b0d7875/index.html",
-    },
-    {
-        title: "Typed to death (Website Game)",
-        url: "https://liluo.io/stefano_gaming/typed-to-death",
-    },
-    {
-        title: "Backslash (Still in testing)",
-        url: "https://liluo.io/instant-builds/343a0a2a-4bba-471b-aa8e-50d41d6c3958",
-    },
-    {
-        title: "Balls (Website Version)",
-        url: "https://liluo.io/instant-builds/f5b34eba-9d84-4707-ae8c-0d61b88e8f26",
-    },
-    {
-        title: "Project Pixel (Website Version)",
-        url: "https://gd.games/instant-builds/be112030-78fe-4f8c-9496-706a2a3e0790",
-    },
-    {
-        title: "Space Survival (Website Version)",
-        url: "https://liluo.io/instant-builds/34bbd368-3b58-4ab5-bf46-70d8fe822fcf",
-    },
-    {
-        title: "WACC Horror Game (Website Version)",
-        url: "https://gd.games/stefano_gaming/wacc-horror-game",
-    },
-    {
-        title: "Draw: A Western Dueling Game (Website Version)",
-        url: "https://gd.games/instant-builds/7bf1949f-a68b-4e19-a322-5bdc587a8e81",
-    },
-    {
-        title: "Sigil Showdown (Website Version)",
-        url: "https://gd.games/instant-builds/e0b51db9-8176-439a-b7d8-55465b46cbfa",
-    },
-];
+const downloadableGames = allGames
+    .filter((game) => game.data.platform !== "browser")
+    .sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const browserGames = allGames
+    .filter((game) => game.data.platform === "browser")
+    .sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
 <Layout title="Games - Stefano Gaming">
     <div class="games-page">
         <h1 class="page-title">Games</h1>
 
-        <!-- Section 1: Downloadable Games -->
         <section class="section">
             <h2 class="section-title">Downloadable Games</h2>
             <div class="games-grid">
@@ -237,21 +25,21 @@ const browserGames = [
                         <article class="game-card">
                             <div class="card-image-wrapper">
                                 <img
-                                    src={game.image}
-                                    alt={game.title}
+                                    src={game.data.image}
+                                    alt={game.data.title}
                                     class="card-image"
                                     loading="lazy"
                                 />
                             </div>
                             <div class="card-content">
-                                <h3 class="card-title">{game.title}</h3>
+                                <h3 class="card-title">{game.data.title}</h3>
                                 <a
-                                    href={game.url}
+                                    href={game.data.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="card-button"
                                 >
-                                    {game.type === "itch"
+                                    {game.data.platform === "itch"
                                         ? "Play on itch.io →"
                                         : "Download →"}
                                 </a>
@@ -262,7 +50,6 @@ const browserGames = [
             </div>
         </section>
 
-        <!-- Section 2: Old Website Games/Versions -->
         <section class="section">
             <h2 class="section-title">Old Website Games/Versions</h2>
             <p class="section-subtitle">
@@ -275,12 +62,12 @@ const browserGames = [
                         <li class="browser-game-item">
                             <span class="game-number">{index + 1}.</span>
                             <a
-                                href={game.url}
+                                href={game.data.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="browser-game-link"
                             >
-                                {game.title}
+                                {game.data.title}
                             </a>
                         </li>
                     ))
@@ -325,7 +112,6 @@ const browserGames = [
         margin-bottom: 1.5rem;
     }
 
-    /* ── Games Grid ── */
     .games-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -344,7 +130,6 @@ const browserGames = [
         }
     }
 
-    /* ── Game Card ── */
     .game-card {
         background-color: var(--card-bg);
         border: 1px solid var(--border);
@@ -358,7 +143,7 @@ const browserGames = [
 
     .game-card:hover {
         transform: translateY(-6px);
-        box-shadow: 0 12px 32px rgba(51, 116, 255, 0.15);
+        box-shadow: 0 12px 32px rgba(254, 44, 0, 0.15);
         border-color: var(--primary);
     }
 
@@ -419,7 +204,6 @@ const browserGames = [
         transform: scale(0.98);
     }
 
-    /* ── Browser Games List ── */
     .browser-games-list {
         list-style: none;
         padding: 0;
@@ -466,7 +250,6 @@ const browserGames = [
         text-decoration: underline;
     }
 
-    /* ── Responsive Page Title ── */
     @media (max-width: 640px) {
         .page-title {
             font-size: 2rem;
