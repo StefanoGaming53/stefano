@@ -185,15 +185,25 @@ const { Content } = await render(about);
         margin-bottom: 0;
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
         .about__container {
             flex-direction: column;
             text-align: center;
         }
 
         .about__avatar {
-            width: 120px;
-            height: 120px;
+            display: none;
+        }
+
+        .about__content {
+            padding-top: 0;
+        }
+
+        .avatar-scroll-zone {
+            display: block;
+            height: 60vh;
+            background: url("/images/avatar.png") no-repeat center top;
+            background-size: 200% auto;
         }
     }
 
@@ -244,7 +254,7 @@ const { Content } = await render(about);
     }
 
     .avatar-scroll-zone {
-        height: 150vh;
+        height: 75vh;
         position: relative;
     }
 
@@ -372,6 +382,9 @@ const { Content } = await render(about);
 
         if (!avatar || !aboutSection) return;
 
+        // Skip animation on mobile - CSS handles final state
+        if (window.matchMedia("(max-width: 768px)").matches) return;
+
         const placeholder = document.createElement("div");
         let initialRect = null;
 
@@ -420,23 +433,17 @@ const { Content } = await render(about);
                     1,
                 );
 
-                const targetLeft = (window.innerWidth - initialRect.width) / 2;
-                const targetTop = 0;
-                const targetScale = Math.max(
-                    window.innerWidth / initialRect.width,
-                    2.5,
-                );
+                const vpWidth = document.documentElement.clientWidth;
+                const centerOffset =
+                    vpWidth / 2 - (initialRect.left + initialRect.width / 2);
+                const topOffset = 0 - initialRect.top;
+                const targetScale = Math.max(vpWidth / initialRect.width, 2.5);
 
-                const currentLeft =
-                    initialRect.left +
-                    (targetLeft - initialRect.left) * progress;
-                const currentTop =
-                    initialRect.top + (targetTop - initialRect.top) * progress;
+                const currentTx = centerOffset * progress;
+                const currentTy = topOffset * progress;
                 const currentScale = 1 + (targetScale - 1) * progress;
 
-                avatar.style.left = currentLeft + "px";
-                avatar.style.top = currentTop + "px";
-                avatar.style.transform = `scale(${currentScale})`;
+                avatar.style.transform = `translateX(${currentTx}px) translateY(${currentTy}px) scale(${currentScale})`;
                 avatar.style.transformOrigin = "top center";
             }
         }
