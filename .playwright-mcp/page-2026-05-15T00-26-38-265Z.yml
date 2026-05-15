@@ -1,0 +1,58 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - link "Menu" [ref=e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Stefano Gaming Website" [ref=e10] [cursor=pointer]:
+        - /url: /
+        - img "Stefano Gaming Website" [ref=e11]
+    - generic [ref=e20]:
+      - emphasis [ref=e21]:
+        - generic [ref=e22]: "Links:"
+      - strong [ref=e25]:
+        - link "Youtube" [ref=e26] [cursor=pointer]:
+          - /url: https://www.youtube.com/@Stefano_Gaming
+      - generic [ref=e27]:
+        - strong [ref=e29]:
+          - link "Itch.io" [ref=e31] [cursor=pointer]:
+            - /url: https://stefano-gaming.itch.io
+        - strong [ref=e33]:
+          - link "Steam" [ref=e34] [cursor=pointer]:
+            - /url: https://steamcommunity.com/profiles/76561198966597091/
+      - strong [ref=e36]:
+        - link "Twitch" [ref=e38] [cursor=pointer]:
+          - /url: https://www.twitch.tv/stefano_gamingtv
+      - strong [ref=e41]:
+        - link:
+          - /url: https://x.com/StefanoGaming53
+        - link "Twitter/X" [ref=e42] [cursor=pointer]:
+          - /url: https://x.com/StefanoGaming53
+      - strong [ref=e43]:
+        - link "Spotify" [ref=e44] [cursor=pointer]:
+          - /url: https://open.spotify.com/artist/52IwESXoFNackotDmAFHSG?si=N-vuK82TSFC3tooJT_lhaA
+      - strong [ref=e46]:
+        - link "Gdevelop Account" [ref=e48] [cursor=pointer]:
+          - /url: https://gd.games/Stefano_Gaming
+  - generic:
+    - link "Menu" [ref=e50] [cursor=pointer]:
+      - /url: "#"
+    - list [ref=e52]:
+      - listitem [ref=e53]:
+        - link "Home and Featured" [ref=e54] [cursor=pointer]:
+          - /url: /
+      - listitem [ref=e55]:
+        - link "Games" [ref=e56] [cursor=pointer]:
+          - /url: /games.html
+      - listitem [ref=e57]:
+        - link "Download Tutorial" [ref=e58] [cursor=pointer]:
+          - /url: /download-tutorial.html
+      - listitem [ref=e59]:
+        - link "Links" [ref=e60] [cursor=pointer]:
+          - /url: /links.html
+  - link "Powered by Create your own unique website with customizable templates. Get Started" [ref=e62] [cursor=pointer]:
+    - /url: https://www.weebly.com/signup?utm_source=internal&utm_medium=footer
+    - generic [ref=e64]:
+      - text: Powered by
+      - img [ref=e66]
+      - generic [ref=e67]: Create your own unique website with customizable templates.
+      - button "Get Started" [ref=e69]

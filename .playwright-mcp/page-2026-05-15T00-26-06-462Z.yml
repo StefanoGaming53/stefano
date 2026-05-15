@@ -1,0 +1,133 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - link "Menu" [ref=e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Stefano Gaming Website" [ref=e10] [cursor=pointer]:
+        - /url: /
+        - img "Stefano Gaming Website" [ref=e11]
+    - generic [ref=e17]:
+      - img "Picture" [ref=e21]
+      - generic [ref=e22]:
+        - text: The Morgue
+        - generic [ref=e23]: Speak With Screams
+        - text: Acceptance
+      - table [ref=e29]:
+        - rowgroup [ref=e30]:
+          - row "Picture Picture Picture" [ref=e31]:
+            - cell "Picture" [ref=e32]:
+              - link "Picture" [ref=e35] [cursor=pointer]:
+                - /url: https://stefano-gaming.itch.io/tales-from-dreadlight-the-morgue
+                - img "Picture" [ref=e36]
+              - iframe [ref=e40]:
+                - generic [active] [ref=f1e1]:
+                  - generic "YouTube Video Player" [ref=f1e3]
+                  - generic [ref=f1e5]:
+                    - generic:
+                      - generic:
+                        - button "Play video" [ref=f1e10] [cursor=pointer]:
+                          - generic [ref=f1e13]:
+                            - img
+                        - button "Hide player controls" [ref=f1e14] [cursor=pointer]
+                        - generic [ref=f1e21]:
+                          - generic [ref=f1e22]:
+                            - 'link "Tales from Dreadlight: The Morgue (Early Access Trailer📺)" [ref=f1e23] [cursor=pointer]':
+                              - /url: https://www.youtube.com/watch?v=uwpV97Vf8S0
+                            - link "Stefano Gaming" [ref=f1e24] [cursor=pointer]:
+                              - /url: /channel/UC0p8IZ3fkE21PtT3NinNAVw
+                              - generic [ref=f1e25]: Stefano Gaming
+                          - generic [ref=f1e26]:
+                            - button "thumbnail-image" [ref=f1e27] [cursor=pointer]:
+                              - img "thumbnail-image" [ref=f1e28]
+                            - generic [ref=f1e30]:
+                              - generic: Stefano Gaming
+                              - generic: 225 subscribers
+            - cell "Picture" [ref=e41]:
+              - link "Picture" [ref=e44] [cursor=pointer]:
+                - /url: https://stefano-gaming.itch.io/speak-with-screams
+                - img "Picture" [ref=e45]
+              - iframe [ref=e49]:
+                - generic [active] [ref=f2e1]:
+                  - generic "YouTube Video Player" [ref=f2e3]
+                  - generic [ref=f2e5]:
+                    - generic:
+                      - generic:
+                        - button "Play video" [ref=f2e10] [cursor=pointer]:
+                          - generic [ref=f2e13]:
+                            - img
+                        - button "Hide player controls" [ref=f2e14] [cursor=pointer]
+                        - generic [ref=f2e21]:
+                          - generic [ref=f2e22]:
+                            - 'link "Speak With Screams: Release Teaser📺" [ref=f2e23] [cursor=pointer]':
+                              - /url: https://www.youtube.com/watch?v=lJlCHp-Ql00
+                            - link "Stefano Gaming" [ref=f2e24] [cursor=pointer]:
+                              - /url: /channel/UC0p8IZ3fkE21PtT3NinNAVw
+                              - generic [ref=f2e25]: Stefano Gaming
+                          - generic [ref=f2e26]:
+                            - button "thumbnail-image" [ref=f2e27] [cursor=pointer]:
+                              - img "thumbnail-image" [ref=f2e28]
+                            - generic [ref=f2e30]:
+                              - generic: Stefano Gaming
+                              - generic: 225 subscribers
+            - cell "Picture" [ref=e50]:
+              - link "Picture" [ref=e53] [cursor=pointer]:
+                - /url: https://stefano-gaming.itch.io/acceptance
+                - img "Picture" [ref=e54]
+              - iframe [ref=e58]:
+                - generic [active] [ref=f3e1]:
+                  - generic "YouTube Video Player" [ref=f3e3]
+                  - generic [ref=f3e5]:
+                    - generic:
+                      - generic:
+                        - button "Play video" [ref=f3e10] [cursor=pointer]:
+                          - generic [ref=f3e13]:
+                            - img
+                        - button "Hide player controls" [ref=f3e14] [cursor=pointer]
+                        - generic [ref=f3e21]:
+                          - generic [ref=f3e22]:
+                            - 'link "Acceptance: Release Teaser📺" [ref=f3e23] [cursor=pointer]':
+                              - /url: https://www.youtube.com/watch?v=I1A3MlH_v3U
+                            - link "Stefano Gaming" [ref=f3e24] [cursor=pointer]:
+                              - /url: /channel/UC0p8IZ3fkE21PtT3NinNAVw
+                              - generic [ref=f3e25]: Stefano Gaming
+                          - generic [ref=f3e26]:
+                            - button "thumbnail-image" [ref=f3e27] [cursor=pointer]:
+                              - img "thumbnail-image" [ref=f3e28]
+                            - generic [ref=f3e30]:
+                              - generic: Stefano Gaming
+                              - generic: 225 subscribers
+      - generic:
+        - generic:
+          - generic:
+            - table:
+              - rowgroup:
+                - row:
+                  - cell
+                  - cell
+    - generic [ref=e69]:
+      - text: If you have any questions or suggestions, feel free to email me at
+      - link "StefanoGaming53@gmail.com" [ref=e71] [cursor=pointer]:
+        - /url: mailto:StefanoGaming53@gmail.com
+  - generic:
+    - link "Menu" [ref=e73] [cursor=pointer]:
+      - /url: "#"
+    - list [ref=e75]:
+      - listitem [ref=e76]:
+        - link "Home and Featured" [ref=e77] [cursor=pointer]:
+          - /url: /
+      - listitem [ref=e78]:
+        - link "Games" [ref=e79] [cursor=pointer]:
+          - /url: /games.html
+      - listitem [ref=e80]:
+        - link "Download Tutorial" [ref=e81] [cursor=pointer]:
+          - /url: /download-tutorial.html
+      - listitem [ref=e82]:
+        - link "Links" [ref=e83] [cursor=pointer]:
+          - /url: /links.html
+  - link "Powered by Create your own unique website with customizable templates. Get Started" [ref=e85] [cursor=pointer]:
+    - /url: https://www.weebly.com/signup?utm_source=internal&utm_medium=footer
+    - generic [ref=e87]:
+      - text: Powered by
+      - img [ref=e89]
+      - generic [ref=e90]: Create your own unique website with customizable templates.
+      - button "Get Started" [ref=e92]

@@ -1,17 +1,165 @@
 ---
+import Layout from "../layouts/Layout.astro";
 
+const games = [
+    {
+        title: "Tales From Dreadlight: The Morgue",
+        youtube: "https://www.youtube.com/embed/uwpV97Vf8S0",
+        itchio: "https://stefano-gaming.itch.io/tales-from-dreadlight-the-morgue",
+    },
+    {
+        title: "Speak With Screams",
+        youtube: "https://www.youtube.com/embed/lJlCHp-Ql00",
+        itchio: "https://stefano-gaming.itch.io/speak-with-screams",
+    },
+    {
+        title: "Acceptance",
+        youtube: "https://www.youtube.com/embed/I1A3MlH_v3U",
+        itchio: "https://stefano-gaming.itch.io/acceptance",
+    },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Stefano Gaming - Home">
+    <section class="hero">
+        <h1>Stefano Gaming</h1>
+        <p class="subtitle">Indie Game Developer</p>
+    </section>
+
+    <section class="featured">
+        <h2>Featured Games</h2>
+        <div class="game-grid">
+            {
+                games.map((game) => (
+                    <article class="game-card">
+                        <h3 class="game-title">{game.title}</h3>
+                        <div class="video-wrapper">
+                            <iframe
+                                src={game.youtube}
+                                title={`${game.title} trailer`}
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            />
+                        </div>
+                        <a
+                            href={game.itchio}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="itchio-link"
+                        >
+                            Play on itch.io →
+                        </a>
+                    </article>
+                ))
+            }
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .hero {
+        text-align: center;
+        padding: 2rem 0 3rem;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--color-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        color: var(--color-text-muted);
+    }
+
+    .featured {
+        margin-top: 1rem;
+    }
+
+    .featured h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: var(--color-text);
+    }
+
+    .game-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .game-card {
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+    .game-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--color-primary);
+    }
+
+    .game-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--color-text);
+    }
+
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #000;
+    }
+
+    .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .itchio-link {
+        display: inline-block;
+        text-align: center;
+        padding: 0.65rem 1.25rem;
+        background-color: var(--color-primary);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+        text-decoration: none;
+    }
+
+    .itchio-link:hover {
+        background-color: var(--color-primary-hover);
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        .game-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+        }
+    }
+</style>

@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Download Tutorial">
+  <main class="tutorial-container">
+    <h1 class="page-title">Download Tutorial</h1>
+    <p class="page-subtitle">Follow these steps to download and play our games from Google Drive links.</p>
+
+    <div class="steps-list">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h2 class="step-title">Click the Download Link</h2>
+          <p class="step-description">Click on the download link for the game you want from the Games page. This will open the Google Drive file page.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h2 class="step-title">Open Google Drive</h2>
+          <p class="step-description">You will be taken to the Google Drive file viewer. You should see the game file listed there.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h2 class="step-title">Click the Download Icon</h2>
+          <p class="step-description">Click the download icon (↓) at the top right of the Google Drive page to start downloading the file.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h2 class="step-title">Extract the ZIP File</h2>
+          <p class="step-description">Once downloaded, locate the .zip file in your Downloads folder. Right-click and select 'Extract All...' (Windows) or double-click (Mac) to extract the contents.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h2 class="step-title">Run the Game</h2>
+          <p class="step-description">Open the extracted folder and look for the game executable (.exe file). Double-click to run and enjoy!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-card">
+      <span class="note-icon">ℹ️</span>
+      <p class="note-text"><strong>Note:</strong> Some games are hosted on itch.io instead of Google Drive. For those, click the link and use the Download button on the itch.io page.</p>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .tutorial-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #e0e0e0;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: #a0a0a0;
+    margin-bottom: 2.5rem;
+  }
+
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .step-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .step-card:hover {
+    border-color: #7c5cfc;
+  }
+
+  .step-number {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background-color: #7c5cfc;
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-content {
+    flex: 1;
+  }
+
+  .step-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-description {
+    font-size: 1rem;
+    color: #b0b0b0;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .note-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-left: 4px solid #7c5cfc;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  .note-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .note-text {
+    font-size: 0.95rem;
+    color: #b0b0b0;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .note-text strong {
+    color: #e0e0e0;
+  }
+
+  @media (max-width: 600px) {
+    .tutorial-container {
+      padding: 1.5rem 1rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .step-card {
+      padding: 1.25rem;
+      gap: 1rem;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      font-size: 1.1rem;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+    }
+
+    .step-description {
+      font-size: 0.95rem;
+    }
+  }
+</style>

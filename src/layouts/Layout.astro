@@ -1,14 +1,17 @@
 ---
+import { ClientRouter } from "astro:transitions";
+
 interface Props {
-  title: string;
+    title: string;
 }
 
 const { title } = Astro.props;
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+    { href: "/", label: "Home" },
+    { href: "/games", label: "Games" },
+    { href: "/download-tutorial", label: "Download Tutorial" },
+    { href: "/links", label: "Links" },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -16,163 +19,281 @@ const currentPath = Astro.url.pathname;
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Astro SPA" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <div class="logo">
-          <a href="/">Stefano</a>
-        </div>
-        <ul class="nav-links">
-          {navLinks.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class:list={[{ active: currentPath === link.href }]}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </header>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Stefano Gaming - Indie Game Developer"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>{title}</title>
+        <ClientRouter />
+    </head>
+    <body>
+        <header class="site-header">
+            <nav class="nav-container">
+                <a href="/" class="site-title">Stefano Gaming</a>
+                <button
+                    class="hamburger"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                >
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <ul class="nav-links" id="nav-links">
+                    {
+                        navLinks.map((link) => (
+                            <li>
+                                <a
+                                    href={link.href}
+                                    class:list={[
+                                        "nav-link",
+                                        { active: currentPath === link.href },
+                                    ]}
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </nav>
+        </header>
 
-    <main transition:animate="fade">
-      <slot />
-    </main>
+        <main transition:animate="fade">
+            <slot />
+        </main>
 
-    <footer>
-      <p>&copy; {new Date().getFullYear()} Stefano. All rights reserved.</p>
-    </footer>
+        <footer class="site-footer">
+            <p>
+                If you have any questions or suggestions, feel free to email me
+                at
+                <a href="mailto:StefanoGaming53@gmail.com"
+                    >StefanoGaming53@gmail.com</a
+                >
+            </p>
+        </footer>
 
-    <style is:global>
-      *,
-      *::before,
-      *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+        <script>
+            const hamburger = document.querySelector(".hamburger");
+            const navLinks = document.getElementById("nav-links");
 
-      :root {
-        --color-bg: #0f0f0f;
-        --color-surface: #1a1a1a;
-        --color-text: #e0e0e0;
-        --color-text-muted: #888;
-        --color-primary: #7c5cfc;
-        --color-primary-hover: #9b82fc;
-        --color-border: #2a2a2a;
-        --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        --font-mono: "SF Mono", "Fira Code", "Fira Mono", monospace;
-      }
+            if (hamburger && navLinks) {
+                hamburger.addEventListener("click", () => {
+                    const isOpen = navLinks.classList.toggle("open");
+                    hamburger.classList.toggle("open");
+                    hamburger.setAttribute("aria-expanded", String(isOpen));
+                });
+            }
+        </script>
 
-      html {
-        font-family: var(--font-sans);
-        background-color: var(--color-bg);
-        color: var(--color-text);
-        line-height: 1.6;
-      }
+        <style is:global>
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-      body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
+            :root {
+                --color-bg: #0f0f0f;
+                --color-surface: #1a1a1a;
+                --color-text: #e0e0e0;
+                --color-text-muted: #888;
+                --color-primary: #7c5cfc;
+                --color-primary-hover: #9b82fc;
+                --color-border: #2a2a2a;
+                --font-sans:
+                    system-ui, -apple-system, "Segoe UI", Roboto,
+                    "Helvetica Neue", sans-serif;
+                --max-width: 1200px;
+            }
 
-      a {
-        color: var(--color-primary);
-        text-decoration: none;
-        transition: color 0.2s ease;
-      }
+            html {
+                font-family: var(--font-sans);
+                background-color: var(--color-bg);
+                color: var(--color-text);
+                line-height: 1.6;
+                scroll-behavior: smooth;
+            }
 
-      a:hover {
-        color: var(--color-primary-hover);
-      }
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
 
-      header {
-        background-color: var(--color-surface);
-        border-bottom: 1px solid var(--color-border);
-        padding: 0 2rem;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
+            a {
+                color: var(--color-primary);
+                text-decoration: none;
+                transition: color 0.2s ease;
+            }
 
-      nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        max-width: 1200px;
-        margin: 0 auto;
-        height: 64px;
-      }
+            a:hover {
+                color: var(--color-primary-hover);
+            }
 
-      .logo a {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--color-text);
-        letter-spacing: -0.02em;
-      }
+            /* ── Header & Nav ── */
+            .site-header {
+                background-color: var(--color-surface);
+                border-bottom: 1px solid var(--color-border);
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+            }
 
-      .logo a:hover {
-        color: var(--color-primary);
-      }
+            .nav-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                max-width: var(--max-width);
+                margin: 0 auto;
+                height: 64px;
+                padding: 0 2rem;
+            }
 
-      .nav-links {
-        display: flex;
-        list-style: none;
-        gap: 2rem;
-      }
+            .site-title {
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: var(--color-text);
+                letter-spacing: -0.02em;
+                white-space: nowrap;
+            }
 
-      .nav-links a {
-        color: var(--color-text-muted);
-        font-size: 0.9rem;
-        font-weight: 500;
-        padding: 0.25rem 0;
-        border-bottom: 2px solid transparent;
-        transition: color 0.2s ease, border-color 0.2s ease;
-      }
+            .site-title:hover {
+                color: var(--color-primary);
+            }
 
-      .nav-links a:hover,
-      .nav-links a.active {
-        color: var(--color-text);
-        border-bottom-color: var(--color-primary);
-      }
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 2rem;
+            }
 
-      main {
-        flex: 1;
-        max-width: 1200px;
-        width: 100%;
-        margin: 0 auto;
-        padding: 3rem 2rem;
-      }
+            .nav-link {
+                color: var(--color-text-muted);
+                font-size: 0.95rem;
+                font-weight: 500;
+                padding: 0.25rem 0;
+                border-bottom: 2px solid transparent;
+                transition:
+                    color 0.2s ease,
+                    border-color 0.2s ease;
+            }
 
-      footer {
-        background-color: var(--color-surface);
-        border-top: 1px solid var(--color-border);
-        padding: 1.5rem 2rem;
-        text-align: center;
-        color: var(--color-text-muted);
-        font-size: 0.85rem;
-      }
+            .nav-link:hover,
+            .nav-link.active {
+                color: var(--color-text);
+                border-bottom-color: var(--color-primary);
+            }
 
-      @keyframes fade {
-        from {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    </style>
-  </body>
+            /* ── Hamburger ── */
+            .hamburger {
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                gap: 5px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 4px;
+                z-index: 1001;
+            }
+
+            .hamburger-line {
+                display: block;
+                width: 26px;
+                height: 3px;
+                background-color: var(--color-text);
+                border-radius: 2px;
+                transition:
+                    transform 0.3s ease,
+                    opacity 0.3s ease;
+            }
+
+            .hamburger.open .hamburger-line:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.open .hamburger-line:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.open .hamburger-line:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            /* ── Main ── */
+            main {
+                flex: 1;
+                max-width: var(--max-width);
+                width: 100%;
+                margin: 0 auto;
+                padding: 3rem 2rem;
+            }
+
+            /* ── Footer ── */
+            .site-footer {
+                background-color: var(--color-surface);
+                border-top: 1px solid var(--color-border);
+                padding: 2rem;
+                text-align: center;
+                color: var(--color-text-muted);
+                font-size: 0.9rem;
+            }
+
+            .site-footer a {
+                color: var(--color-primary);
+            }
+
+            .site-footer a:hover {
+                color: var(--color-primary-hover);
+            }
+
+            /* ── Responsive ── */
+            @media (max-width: 768px) {
+                .hamburger {
+                    display: flex;
+                }
+
+                .nav-links {
+                    position: fixed;
+                    top: 64px;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 2.5rem;
+                    background-color: var(--color-surface);
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity 0.3s ease;
+                    z-index: 999;
+                }
+
+                .nav-links.open {
+                    opacity: 1;
+                    pointer-events: auto;
+                }
+
+                .nav-link {
+                    font-size: 1.2rem;
+                }
+
+                .nav-container {
+                    padding: 0 1.25rem;
+                }
+
+                main {
+                    padding: 2rem 1.25rem;
+                }
+            }
+        </style>
+    </body>
 </html>

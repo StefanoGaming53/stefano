@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Links">
+  <main class="links-container">
+    <h1 class="page-title">Links</h1>
+    <p class="page-subtitle">Find me on these platforms and social media.</p>
+
+    <div class="links-grid">
+      <a href="https://www.youtube.com/@Stefano_Gaming" target="_blank" rel="noopener noreferrer" class="link-card">
+        <h2 class="link-title">YouTube</h2>
+        <p class="link-url">youtube.com/@Stefano_Gaming</p>
+      </a>
+
+      <a href="https://stefano-gaming.itch.io" target="_blank" rel="noopener noreferrer" class="link-card">
+        <h2 class="link-title">Itch.io</h2>
+        <p class="link-url">stefano-gaming.itch.io</p>
+      </a>
+
+      <a href="https://steamcommunity.com/profiles/76561198966597091/" target="_blank" rel="noopener noreferrer" class="link-card">
+        <h2 class="link-title">Steam</h2>
+        <p class="link-url">steamcommunity.com/profiles/76561198966597091</p>
+      </a>
+
+      <a href="https://www.twitch.tv/stefano_gamingtv" target="_blank" rel="noopener noreferrer" class="link-card">
+        <h2 class="link-title">Twitch</h2>
+        <p class="link-url">twitch.tv/stefano_gamingtv</p>
+      </a>
+
+      <a href="https://x.com/StefanoGaming53" target="_blank" rel="noopener noreferrer" class="link-card">
+        <h2 class="link-title">Twitter/X</h2>
+        <p class="link-url">x.com/StefanoGaming53</p>
+      </a>
+
+      <a href="https://open.spotify.com/artist/52IwESXoFNackotDmAFHSG?si=N-vuK82TSFC3tooJT_lhaA" target="_blank" rel="noopener noreferrer" class="link-card">
+        <h2 class="link-title">Spotify</h2>
+        <p class="link-url">open.spotify.com/artist/52IwESXoFNackotDmAFHSG</p>
+      </a>
+
+      <a href="https://gd.games/Stefano_Gaming" target="_blank" rel="noopener noreferrer" class="link-card">
+        <h2 class="link-title">Gdevelop Account</h2>
+        <p class="link-url">gd.games/Stefano_Gaming</p>
+      </a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .links-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #e0e0e0;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: #a0a0a0;
+    margin-bottom: 2.5rem;
+  }
+
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .link-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-decoration: none;
+    text-align: center;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+
+  .link-card:hover {
+    border-color: #7c5cfc;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(124, 92, 252, 0.15);
+  }
+
+  .link-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .link-url {
+    font-size: 0.9rem;
+    color: #808080;
+    margin: 0;
+    word-break: break-all;
+  }
+
+  @media (max-width: 900px) {
+    .links-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .links-container {
+      padding: 1.5rem 1rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .links-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .link-card {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .link-title {
+      font-size: 1.2rem;
+    }
+  }
+</style>

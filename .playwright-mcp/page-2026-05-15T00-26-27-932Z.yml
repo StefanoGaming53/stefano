@@ -1,0 +1,186 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - link "Menu" [ref=e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Stefano Gaming Website" [ref=e10] [cursor=pointer]:
+        - /url: /
+        - img "Stefano Gaming Website" [ref=e11]
+    - table [ref=e24]:
+      - rowgroup [ref=e25]:
+        - 'row "Miami''s Deadline Picture CyberScape Picture Typed to death Picture Project Pixel Picture Sigil Showdown Picture Draw Picture Grief Picture Sounds From Silence Picture Solitary Sonata Picture Inverted (Remastered) Picture Pixel Party Picture Survival of the Fittest Picture Balls Picture WACC Horror Game Picture Someone''s In The Shadows Picture Acceptance Picture Speak With Screams Picture Tales From Dreadlight: The Morgue Picture Dungeon Knight Demo Picture Pixel Surgeon Picture Defend The Fort Picture Space Survival Picture Factory Reset (Early in Development) Picture See Through Static Picture Pale Woods Picture Kitty Combat Picture" [ref=e26]':
+          - cell "Miami's Deadline Picture CyberScape Picture Typed to death Picture Project Pixel Picture Sigil Showdown Picture Draw Picture Grief Picture Sounds From Silence Picture Solitary Sonata Picture" [ref=e27]:
+            - generic [ref=e28]: Miami's Deadline
+            - link "Picture" [ref=e31] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1UiFhlH0ri-hOagqCXXp5meGh8ZNbMQti/view?usp=sharing
+              - img "Picture" [ref=e32]
+            - generic [ref=e33]: CyberScape
+            - link "Picture" [ref=e36] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/11_vqLNkq-aVAyq6faA3efIeUkj2yBF_n/view?usp=sharing
+              - img "Picture" [ref=e37]
+            - generic [ref=e38]: Typed to death
+            - link "Picture" [ref=e41] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1oJX_Z_2yMUPysaR4diGEie4irHgJ5Dle/view?usp=sharing
+              - img "Picture" [ref=e42]
+            - generic [ref=e43]: Project Pixel
+            - link "Picture" [ref=e46] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1RIV2WuxNI6fuUBPMKpCuZoLRN92nINEX/view?usp=share_link
+              - img "Picture" [ref=e47]
+            - generic [ref=e48]: Sigil Showdown
+            - link "Picture" [ref=e51] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1hP-XYTLlSF5S4kYeMxNHMHNFfglFx-Bf/view?usp=sharing
+              - img "Picture" [ref=e52]
+            - generic [ref=e54]: Draw
+            - link "Picture" [ref=e57] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1XMJmS-VXXikjCAq38VcDxVzLde0CiQqX/view?usp=sharing
+              - img "Picture" [ref=e58]
+            - generic [ref=e59]: Grief
+            - link "Picture" [ref=e62] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/grief
+              - img "Picture" [ref=e63]
+            - generic [ref=e64]: Sounds From Silence
+            - link "Picture" [ref=e67] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/sounds-from-silence
+              - img "Picture" [ref=e68]
+            - generic [ref=e69]: Solitary Sonata
+            - link "Picture" [ref=e72] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/solitary-sonata
+              - img "Picture" [ref=e73]
+          - 'cell "Inverted (Remastered) Picture Pixel Party Picture Survival of the Fittest Picture Balls Picture WACC Horror Game Picture Someone''s In The Shadows Picture Acceptance Picture Speak With Screams Picture Tales From Dreadlight: The Morgue Picture" [ref=e74]':
+            - generic [ref=e75]: Inverted (Remastered)
+            - link "Picture" [ref=e78] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1J49NkgcNUL9Xa_VuLx11ydfxdgf1QFl5/view?usp=sharing
+              - img "Picture" [ref=e79]
+            - generic [ref=e80]: Pixel Party
+            - link "Picture" [ref=e83] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/18r6obhepIw_znqLMkUL6iPslov_8TAwS/view?usp=sharing
+              - img "Picture" [ref=e84]
+            - generic [ref=e85]: Survival of the Fittest
+            - link "Picture" [ref=e88] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1ogQJlzagftY9nyw1bjvDNT3ab29g-4TT/view?usp=sharing
+              - img "Picture" [ref=e89]
+            - generic [ref=e90]: Balls
+            - link "Picture" [ref=e93] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1ub53YVg9dPqa8SmcniKH_dTF0wvckw0-/view?usp=share_link
+              - img "Picture" [ref=e94]
+            - generic [ref=e95]: WACC Horror Game
+            - link "Picture" [ref=e98] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1QFSaP0yu9OomHN1IwuTSjBsI1W6mxk0h/view?usp=share_link
+              - img "Picture" [ref=e99]
+            - generic [ref=e101]: Someone's In The Shadows
+            - link "Picture" [ref=e104] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/someones-in-the-shadows
+              - img "Picture" [ref=e105]
+            - generic [ref=e106]: Acceptance
+            - img "Picture" [ref=e110]
+            - generic [ref=e111]: Speak With Screams
+            - link "Picture" [ref=e114] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/speak-with-screams
+              - img "Picture" [ref=e115]
+            - generic [ref=e116]: "Tales From Dreadlight: The Morgue"
+            - link "Picture" [ref=e119] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/tales-from-dreadlight-the-morgue
+              - img "Picture" [ref=e120]
+          - cell "Dungeon Knight Demo Picture Pixel Surgeon Picture Defend The Fort Picture Space Survival Picture Factory Reset (Early in Development) Picture See Through Static Picture Pale Woods Picture Kitty Combat Picture" [ref=e121]:
+            - generic [ref=e122]: Dungeon Knight Demo
+            - link "Picture" [ref=e125] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1KvVFOWcxLryX6Y16BvGNcxNjcdwE0JZc/view?usp=sharing
+              - img "Picture" [ref=e126]
+            - generic [ref=e127]: Pixel Surgeon
+            - link "Picture" [ref=e130] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1LL1bBh31CVpIIXUHXqvXQcW6UKyAC2mZ/view?usp=sharing
+              - img "Picture" [ref=e131]
+            - generic [ref=e132]: Defend The Fort
+            - link "Picture" [ref=e135] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1P3KscLzUNs643MgpWcddO9j81HT76a5a/view?usp=sharing
+              - img "Picture" [ref=e136]
+            - generic [ref=e137]: Space Survival
+            - link "Picture" [ref=e140] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1Nf4Eqyz87XO0c51MQeCJ-urAAULXwWSU/view?usp=share_link
+              - img "Picture" [ref=e141]
+            - generic [ref=e142]: Factory Reset (Early in Development)
+            - link "Picture" [ref=e145] [cursor=pointer]:
+              - /url: https://drive.google.com/file/d/1f4t2y5ppcYVcIgVyP9OitBCR6B-_QBSb/view?usp=share_link
+              - img "Picture" [ref=e146]
+            - generic [ref=e147]: See Through Static
+            - link "Picture" [ref=e150] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/see-through-static
+              - img "Picture" [ref=e151]
+            - generic [ref=e152]: Pale Woods
+            - link "Picture" [ref=e155] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/pale-woods
+              - img "Picture" [ref=e156]
+            - generic [ref=e157]: Kitty Combat
+            - link "Picture" [ref=e160] [cursor=pointer]:
+              - /url: https://stefano-gaming.itch.io/kitty-combat
+              - img "Picture" [ref=e161]
+    - generic [ref=e169]:
+      - generic [ref=e170]:
+        - strong [ref=e171]: Old Website Games/Versions
+        - text: (These can be played in your browser without any downloads, At the cost of quality)
+      - link "Miami's Deadline (Website Version)" [ref=e173] [cursor=pointer]:
+        - /url: https://liluo.io/instant-builds/70ac898b-be32-4aaa-bab3-0a0eb5b70b69
+        - generic [ref=e174]: Miami's Deadline (Website Version)
+      - generic [ref=e175]:
+        - generic [ref=e176]:
+          - link "Dungeon Knight Demo (Website Version)" [ref=e177] [cursor=pointer]:
+            - /url: https://liluo.io/instant-builds/4ebf5302-d97d-4451-aebe-aa05edb9062e
+          - link "Survival of the Fittest (Website Version)" [ref=e178] [cursor=pointer]:
+            - /url: https://liluo.io/instant-builds/d8648124-c87c-4963-bb59-f269724fe91e
+          - link "CyberScape (Website Version)" [ref=e179] [cursor=pointer]:
+            - /url: https://liluo.io/instant-builds/ef5515b5-cc32-4f1e-8b64-422849816280
+        - 'link "Pixel Party: Game Jam Version (Website Version)+(Mobile Compatible)" [ref=e181] [cursor=pointer]':
+          - /url: https://liluo.io/stefano_gaming/pixel-party
+      - generic [ref=e183]:
+        - link "A Better Place (Website Game)" [ref=e184] [cursor=pointer]:
+          - /url: https://games.gdevelop-app.com/game-ec64e84f-9a26-4194-ba1d-ac29d490a4d7/index.html
+        - link "Deadzone (Website Game)+(Mobile Compatible)" [ref=e185] [cursor=pointer]:
+          - /url: https://games.gdevelop-app.com/game-d6049b6b-a7b5-497b-b17d-21001b0d7875/index.html
+      - link "Typed to death (Website Game)" [ref=e188] [cursor=pointer]:
+        - /url: https://liluo.io/stefano_gaming/typed-to-death
+      - link "Backslash (Still in testing and under work)" [ref=e190] [cursor=pointer]:
+        - /url: https://liluo.io/instant-builds/343a0a2a-4bba-471b-aa8e-50d41d6c3958
+        - generic [ref=e191]: Backslash (Still in testing and under work)
+      - generic [ref=e192]:
+        - link "Balls (Website Version)+(Mobile Compatible)" [ref=e193] [cursor=pointer]:
+          - /url: https://liluo.io/instant-builds/f5b34eba-9d84-4707-ae8c-0d61b88e8f26
+          - generic [ref=e194]: Balls (Website Version)+(Mobile Compatible)
+        - generic [ref=e195]:
+          - link "Project Pixel (Website Version)+(Mobile Compatible)" [ref=e196] [cursor=pointer]:
+            - /url: https://gd.games/instant-builds/be112030-78fe-4f8c-9496-706a2a3e0790
+          - link "Space Survival" [ref=e197] [cursor=pointer]:
+            - /url: https://liluo.io/instant-builds/34bbd368-3b58-4ab5-bf46-70d8fe822fcf
+          - link "(Website Version)" [ref=e198] [cursor=pointer]:
+            - /url: https://liluo.io/instant-builds/34bbd368-3b58-4ab5-bf46-70d8fe822fcf
+      - link "WACC Horror Game (Website Version)" [ref=e200] [cursor=pointer]:
+        - /url: https://gd.games/stefano_gaming/wacc-horror-game
+      - generic [ref=e201]:
+        - 'link "Draw: A Western Dueling Game" [ref=e203] [cursor=pointer]':
+          - /url: https://gd.games/instant-builds/7bf1949f-a68b-4e19-a322-5bdc587a8e81
+        - link "(Website Version)" [ref=e205] [cursor=pointer]:
+          - /url: https://gd.games/instant-builds/7bf1949f-a68b-4e19-a322-5bdc587a8e81
+      - link "Sigil Showdown (Website Version)" [ref=e207] [cursor=pointer]:
+        - /url: https://gd.games/instant-builds/e0b51db9-8176-439a-b7d8-55465b46cbfa
+  - generic:
+    - link "Menu" [ref=e209] [cursor=pointer]:
+      - /url: "#"
+    - list [ref=e211]:
+      - listitem [ref=e212]:
+        - link "Home and Featured" [ref=e213] [cursor=pointer]:
+          - /url: /
+      - listitem [ref=e214]:
+        - link "Games" [ref=e215] [cursor=pointer]:
+          - /url: /games.html
+      - listitem [ref=e216]:
+        - link "Download Tutorial" [ref=e217] [cursor=pointer]:
+          - /url: /download-tutorial.html
+      - listitem [ref=e218]:
+        - link "Links" [ref=e219] [cursor=pointer]:
+          - /url: /links.html
+  - link "Powered by Create your own unique website with customizable templates. Get Started" [ref=e221] [cursor=pointer]:
+    - /url: https://www.weebly.com/signup?utm_source=internal&utm_medium=footer
+    - generic [ref=e223]:
+      - text: Powered by
+      - img [ref=e225]
+      - generic [ref=e226]: Create your own unique website with customizable templates.
+      - button "Get Started" [ref=e228]

@@ -1,0 +1,63 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - link "Menu" [ref=e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Stefano Gaming Website" [ref=e10] [cursor=pointer]:
+        - /url: /
+        - img "Stefano Gaming Website" [ref=e11]
+    - generic [ref=e20]:
+      - heading "Follow The Steps Below" [level=2] [ref=e21]
+      - table [ref=e24]:
+        - rowgroup [ref=e25]:
+          - row [ref=e26]:
+            - cell [ref=e27]:
+              - table [ref=e30]:
+                - rowgroup [ref=e31]:
+                  - row [ref=e32]:
+                    - cell [ref=e33]:
+                      - img [ref=e36] [cursor=pointer]
+                    - cell [ref=e37]:
+                      - img [ref=e40] [cursor=pointer]
+                    - cell [ref=e41]:
+                      - img [ref=e44] [cursor=pointer]
+                    - cell [ref=e45]:
+                      - img [ref=e48] [cursor=pointer]
+                    - cell [ref=e49]:
+                      - img [ref=e52] [cursor=pointer]
+                    - cell [ref=e53]:
+                      - img [ref=e56] [cursor=pointer]
+                    - cell [ref=e57]:
+                      - img [ref=e60] [cursor=pointer]
+                    - cell [ref=e61]:
+                      - img [ref=e64] [cursor=pointer]
+                    - cell [ref=e65]:
+                      - img [ref=e68] [cursor=pointer]
+          - row "Choose a game to download, and click on it" [ref=e69]:
+            - cell "Choose a game to download, and click on it" [ref=e70]:
+              - generic [ref=e75]:
+                - img [ref=e76]
+                - generic [ref=e78]: Choose a game to download, and click on it
+  - generic:
+    - link "Menu" [ref=e87] [cursor=pointer]:
+      - /url: "#"
+    - list [ref=e89]:
+      - listitem [ref=e90]:
+        - link "Home and Featured" [ref=e91] [cursor=pointer]:
+          - /url: /
+      - listitem [ref=e92]:
+        - link "Games" [ref=e93] [cursor=pointer]:
+          - /url: /games.html
+      - listitem [ref=e94]:
+        - link "Download Tutorial" [ref=e95] [cursor=pointer]:
+          - /url: /download-tutorial.html
+      - listitem [ref=e96]:
+        - link "Links" [ref=e97] [cursor=pointer]:
+          - /url: /links.html
+  - link "Powered by Create your own unique website with customizable templates. Get Started" [ref=e99] [cursor=pointer]:
+    - /url: https://www.weebly.com/signup?utm_source=internal&utm_medium=footer
+    - generic [ref=e101]:
+      - text: Powered by
+      - img [ref=e103]
+      - generic [ref=e104]: Create your own unique website with customizable templates.
+      - button "Get Started" [ref=e106]
