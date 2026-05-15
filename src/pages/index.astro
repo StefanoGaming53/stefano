@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Stefano Gaming">
+<Layout title="Stefano Gaming" bodyClass="has-bg">
     <section class="hero">
         <div class="hero__overlay"></div>
         <img
@@ -92,6 +92,34 @@ import Layout from "../layouts/Layout.astro";
     </section>
 </Layout>
 
+<style is:global>
+    body.has-bg {
+        background-image: url("/images/background.jpg");
+        background-size: cover;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    body.has-bg::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.6) 100%
+        );
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    body.has-bg main {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
 <style>
     :root {
         --bg: #000000;
@@ -106,46 +134,22 @@ import Layout from "../layouts/Layout.astro";
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 4rem 1rem;
-        position: relative;
-        background-image: url("/images/background.jpg");
-        background-size: cover;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-        min-height: 400px;
-        overflow: hidden;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-    }
-
-    .hero__overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0.65) 0%,
-            rgba(0, 0, 0, 0.8) 100%
-        );
-        z-index: 1;
+        padding: 4rem 1rem 3rem;
     }
 
     .hero__banner {
         max-width: 100%;
         height: auto;
-        position: relative;
-        z-index: 2;
     }
 
     .games {
-        padding: 2rem 1rem;
+        padding: 2rem 0;
     }
 
     .games__grid {
         display: grid;
         grid-template-columns: 1fr;
         gap: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
     }
 
     @media (min-width: 768px) {
@@ -191,7 +195,7 @@ import Layout from "../layouts/Layout.astro";
     .card__video {
         position: relative;
         width: 100%;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        padding-bottom: 56.25%;
         margin: 0 0 1rem;
     }
 
