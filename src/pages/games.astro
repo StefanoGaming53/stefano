@@ -27,6 +27,25 @@ const downloadableGamesJson = JSON.stringify(
     <div class="games-page">
         <h1 class="page-title">Games</h1>
 
+        <div class="toast" id="tutorial-toast" aria-live="polite">
+            <div class="toast-content">
+                <p class="toast-message">
+                    First time here? Check out the
+                    <a href="/download-tutorial" class="toast-link"
+                        >Download Tutorial</a
+                    >
+                    for help getting started.
+                </p>
+                <button
+                    class="toast-close"
+                    id="toast-close"
+                    aria-label="Dismiss"
+                >
+                    ×
+                </button>
+            </div>
+        </div>
+
         <section class="section">
             <h2 class="section-title">Downloadable Games</h2>
 
@@ -255,6 +274,35 @@ const downloadableGamesJson = JSON.stringify(
 
         document.addEventListener("astro:page-load", initGamesPage);
         initGamesPage();
+
+        function initTutorialToast() {
+            const toast = document.getElementById("tutorial-toast");
+            const closeBtn = document.getElementById("toast-close");
+            if (!toast || !closeBtn) return;
+
+            // Move toast to body so it escapes main's stacking context
+            // and always renders above the footer
+            document.body.appendChild(toast);
+
+            const STORAGE_KEY = "stefano-games-toast-dismissed";
+
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                requestAnimationFrame(() => {
+                    toast.classList.add("toast--visible");
+                });
+            }
+
+            const newCloseBtn = closeBtn.cloneNode(true) as HTMLButtonElement;
+            closeBtn.parentNode?.replaceChild(newCloseBtn, closeBtn);
+
+            newCloseBtn.addEventListener("click", () => {
+                toast.classList.remove("toast--visible");
+                localStorage.setItem(STORAGE_KEY, "true");
+            });
+        }
+
+        document.addEventListener("astro:page-load", initTutorialToast);
+        initTutorialToast();
     </script>
 </Layout>
 
@@ -514,6 +562,75 @@ const downloadableGamesJson = JSON.stringify(
         text-decoration: underline;
     }
 
+    /* Toast */
+    .toast {
+        --toast-bg: #1a1a1a;
+        --toast-border: #fe2c00;
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        max-width: 560px;
+        width: calc(100% - 2rem);
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
+    }
+
+    .toast--visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .toast-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background-color: var(--toast-bg);
+        border: 1px solid var(--toast-border);
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+    }
+
+    .toast-message {
+        flex: 1;
+        color: var(--text);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .toast-link {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .toast-link:hover {
+        color: #8a1800;
+    }
+
+    .toast-close {
+        flex-shrink: 0;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 1.5rem;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 0.25rem;
+        transition: color 0.2s ease;
+    }
+
+    .toast-close:hover {
+        color: var(--text);
+    }
+
     @media (max-width: 640px) {
         .page-title {
             font-size: 2rem;
@@ -525,6 +642,18 @@ const downloadableGamesJson = JSON.stringify(
 
         .search-wrapper {
             max-width: 100%;
+        }
+
+        .toast-content {
+            padding: 0.85rem 1rem;
+        }
+
+        .toast-message {
+            font-size: 0.9rem;
+        }
+
+        .toast {
+            bottom: 1rem;
         }
     }
 </style>
