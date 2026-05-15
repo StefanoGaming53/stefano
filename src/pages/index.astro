@@ -22,13 +22,7 @@ const featuredGames = await getCollection(
             {
                 featuredGames.map((game) => (
                     <article class="card">
-                        <img
-                            src={game.data.image}
-                            alt={game.data.title}
-                            class="card__image"
-                        />
-                        <h2 class="card__title">{game.data.title}</h2>
-                        {game.data.youtubeId && (
+                        {game.data.youtubeId ? (
                             <div class="card__video">
                                 <iframe
                                     src={`https://www.youtube.com/embed/${game.data.youtubeId}`}
@@ -38,7 +32,14 @@ const featuredGames = await getCollection(
                                     allowfullscreen
                                 />
                             </div>
+                        ) : (
+                            <img
+                                src={game.data.image}
+                                alt={game.data.title}
+                                class="card__image"
+                            />
                         )}
+                        <h2 class="card__title">{game.data.title}</h2>
                         <a
                             href={game.data.url}
                             target="_blank"
