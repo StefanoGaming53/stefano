@@ -25,15 +25,6 @@ const featuredGames = await getCollection(
                         class="card"
                         data-has-video={!!game.data.youtubeId}
                     >
-                        <h2 class="card__title">{game.data.title}</h2>
-                        <a
-                            href={game.data.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="card__link"
-                        >
-                            Play on itch.io
-                        </a>
                         <div class="card__media">
                             <img
                                 src={game.data.image}
@@ -54,6 +45,15 @@ const featuredGames = await getCollection(
                                 </div>
                             )}
                         </div>
+                        <h2 class="card__title">{game.data.title}</h2>
+                        <a
+                            href={game.data.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="card__link"
+                        >
+                            Play on itch.io
+                        </a>
                     </article>
                 ))
             }
