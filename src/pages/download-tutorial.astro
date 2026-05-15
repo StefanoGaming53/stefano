@@ -1,68 +1,26 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getEntry } from "astro:content";
+import { getEntry, render } from "astro:content";
 
 const tutorial = await getEntry("tutorial", "steps");
-const steps = tutorial.data.steps;
+const { Content } = await render(tutorial);
 ---
 
 <Layout title="Download Tutorial | Stefano Gaming">
-    <main class="tutorial-container">
-        <h1 class="tutorial-heading">Download Tutorial</h1>
-
-        <div class="steps-list">
-            {
-                steps.map((step) => (
-                    <div class="step-card">
-                        <div class="step-header">
-                            <span class="step-badge">{step.step}</span>
-                            <h2 class="step-title">
-                                Step {step.step} &mdash; {step.title}
-                            </h2>
-                        </div>
-                        <div class="step-image-wrapper">
-                            <img
-                                src={step.image}
-                                alt={`Step ${step.step}: ${step.title}`}
-                                class="step-image"
-                                loading="lazy"
-                            />
-                        </div>
-                    </div>
-                ))
-            }
+    <div class="tutorial-container">
+        <h1 class="tutorial-heading">{tutorial.data.title}</h1>
+        <div class="tutorial-content">
+            <Content />
         </div>
-
-        <div class="note-box">
-            <p class="note-text">
-                <strong>Note:</strong> Some games are hosted on itch.io instead of
-                Google Drive. For those, click the link and use the Download button
-                on the itch.io page.
-            </p>
-        </div>
-    </main>
+    </div>
 </Layout>
 
 <style>
-    :root {
-        --bg: #000000;
-        --card-bg: #0a0a0a;
-        --text: #ffffff;
-        --muted: #818181;
-        --primary: #fe2c00;
-        --border: #222222;
-    }
-
     .tutorial-container {
         max-width: 900px;
         margin: 0 auto;
         padding: 2rem 1rem;
-        background-color: var(--bg);
-        color: var(--text);
-        font-family:
-            system-ui,
-            -apple-system,
-            sans-serif;
+        color: var(--color-text, #ffffff);
     }
 
     .tutorial-heading {
@@ -70,93 +28,57 @@ const steps = tutorial.data.steps;
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 2.5rem;
-        color: var(--text);
     }
 
-    .steps-list {
+    .tutorial-content {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 2.5rem;
     }
 
-    .step-card {
-        background-color: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1.5rem;
-        transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-    }
-
-    .step-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(254, 44, 0, 0.1);
-    }
-
-    .step-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .step-badge {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        border-radius: 50%;
-        background-color: var(--primary);
-        color: var(--text);
-        font-weight: 700;
-        font-size: 1.1rem;
-    }
-
-    .step-title {
-        font-size: 1.2rem;
+    .tutorial-content :global(h2) {
+        font-size: 1.3rem;
         font-weight: 600;
-        color: var(--text);
-        margin: 0;
-        line-height: 1.4;
+        color: var(--color-text, #ffffff);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--color-border, #222222);
     }
 
-    .step-image-wrapper {
-        width: 100%;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid var(--border);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    .tutorial-content :global(p) {
+        color: var(--color-text-muted, #818181);
+        line-height: 1.7;
+        margin-bottom: 0.75rem;
     }
 
-    .step-image {
+    .tutorial-content :global(strong) {
+        color: var(--color-text, #ffffff);
+    }
+
+    .tutorial-content :global(img) {
         display: block;
         max-width: 100%;
         width: 100%;
         height: auto;
-        object-fit: contain;
-    }
-
-    .note-box {
-        margin-top: 2.5rem;
-        padding: 1.25rem 1.5rem;
-        background-color: var(--card-bg);
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--primary);
         border-radius: 8px;
+        border: 1px solid var(--color-border, #222222);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        margin-top: 0.75rem;
     }
 
-    .note-text {
-        margin: 0;
-        color: var(--muted);
+    .tutorial-content :global(blockquote) {
+        margin-top: 1rem;
+        padding: 1rem 1.25rem;
+        background-color: #0a0a0a;
+        border-left: 4px solid var(--color-primary, #fe2c00);
+        border-radius: 6px;
+        color: var(--color-text-muted, #818181);
         font-size: 0.95rem;
         line-height: 1.6;
     }
 
-    .note-text strong {
-        color: var(--text);
+    .tutorial-content :global(blockquote strong) {
+        color: var(--color-text, #ffffff);
     }
 
     @media (max-width: 768px) {
@@ -169,23 +91,8 @@ const steps = tutorial.data.steps;
             margin-bottom: 2rem;
         }
 
-        .step-card {
-            padding: 1.25rem;
-        }
-
-        .step-header {
-            gap: 0.75rem;
-        }
-
-        .step-badge {
-            width: 34px;
-            height: 34px;
-            min-width: 34px;
-            font-size: 1rem;
-        }
-
-        .step-title {
-            font-size: 1.05rem;
+        .tutorial-content :global(h2) {
+            font-size: 1.15rem;
         }
     }
 
@@ -195,12 +102,8 @@ const steps = tutorial.data.steps;
             margin-bottom: 1.5rem;
         }
 
-        .step-card {
-            padding: 1rem;
-        }
-
-        .step-title {
-            font-size: 0.95rem;
+        .tutorial-content :global(h2) {
+            font-size: 1.05rem;
         }
     }
 </style>
