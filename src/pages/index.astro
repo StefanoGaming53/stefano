@@ -2,10 +2,19 @@
 import Layout from "../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 
-const featuredGames = await getCollection(
-    "games",
-    (game) => game.data.featured,
-);
+const featuredEntries = await getCollection("featured");
+const featuredList = featuredEntries[0]?.data.games ?? [];
+
+const allGames = await getCollection("games");
+const gameByUrl = new Map(allGames.map((g) => [g.data.url, g]));
+
+const featuredGames = featuredList
+    .map((f) => {
+        const game = gameByUrl.get(f.url);
+        if (!game) return null;
+        return { data: game.data, youtubeId: f.youtubeId };
+    })
+    .filter(Boolean);
 
 const aboutEntries = await getCollection("about");
 const about = aboutEntries[0];
@@ -25,20 +34,17 @@ const { Content } = await render(about);
         <div class="games__grid">
             {
                 featuredGames.map((game) => (
-                    <article
-                        class="card"
-                        data-has-video={!!game.data.youtubeId}
-                    >
+                    <article class="card" data-has-video={!!game.youtubeId}>
                         <div class="card__media">
                             <img
                                 src={game.data.image}
                                 alt={game.data.title}
                                 class="card__media-img"
                             />
-                            {game.data.youtubeId && (
+                            {game.youtubeId && (
                                 <div
                                     class="card__media-video"
-                                    data-src={`https://www.youtube.com/embed/${game.data.youtubeId}?autoplay=1&mute=1`}
+                                    data-src={`https://www.youtube.com/embed/${game.youtubeId}?autoplay=1&mute=1`}
                                 >
                                     <iframe
                                         title={`${game.data.title} Trailer`}
@@ -56,7 +62,7 @@ const { Content } = await render(about);
                             rel="noopener noreferrer"
                             class="card__link"
                         >
-                            Play on itch.io
+                            {`Download on ${new URL(game.data.url).hostname.split(".").slice(-2).join(".")}`}
                         </a>
                     </article>
                 ))

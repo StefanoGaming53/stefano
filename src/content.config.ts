@@ -8,10 +8,20 @@ const games = defineCollection({
     title: z.string(),
     image: z.string(),
     url: z.string().url(),
-    platform: z.enum(["google-drive", "itch", "browser"]),
-    featured: z.boolean().default(false),
-    youtubeId: z.string().optional(),
     description: z.string().optional(),
+    releaseDate: z.string().optional(),
+  }),
+});
+
+const featured = defineCollection({
+  loader: glob({ pattern: "featured.md", base: "./src/data" }),
+  schema: z.object({
+    games: z.array(
+      z.object({
+        url: z.string().url(),
+        youtubeId: z.string(),
+      }),
+    ),
   }),
 });
 
@@ -29,4 +39,4 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { games, tutorial, about };
+export const collections = { games, featured, tutorial, about };

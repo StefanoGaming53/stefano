@@ -2,10 +2,5 @@
 title: "Speak With Screams"
 image: "/images/games/speak-with-screams.png"
 url: "https://stefano-gaming.itch.io/speak-with-screams"
-platform: "itch"
-featured: true
-youtubeId: "lJlCHp-Ql00"
 description: "Speak With Screams - a game by Stefano Gaming"
 ---
-
-Speak With Screams - a game by Stefano Gaming

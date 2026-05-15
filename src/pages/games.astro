@@ -2,14 +2,27 @@
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
+function isBrowserGame(url: string): boolean {
+    try {
+        const hostname = new URL(url).hostname;
+        return (
+            hostname.includes("liluo.io") ||
+            hostname.includes("gd.games") ||
+            hostname.includes("gdevelop-app.com")
+        );
+    } catch {
+        return false;
+    }
+}
+
 const allGames = await getCollection("games");
 
 const downloadableGames = allGames
-    .filter((game) => game.data.platform !== "browser")
+    .filter((game) => !isBrowserGame(game.data.url))
     .sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 const browserGames = allGames
-    .filter((game) => game.data.platform === "browser")
+    .filter((game) => isBrowserGame(game.data.url))
     .sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 const downloadableGamesJson = JSON.stringify(
@@ -18,7 +31,7 @@ const downloadableGamesJson = JSON.stringify(
         title: game.data.title,
         image: game.data.image,
         url: game.data.url,
-        platform: game.data.platform,
+        releaseDate: game.data.releaseDate || null,
     })),
 );
 ---
@@ -73,6 +86,12 @@ const downloadableGamesJson = JSON.stringify(
                         placeholder="Search games..."
                         autocomplete="off"
                     />
+                    <select id="games-sort" class="sort-select">
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                    </select>
                 </div>
                 <a href="#browser-games" class="jump-button">
                     Jump to Old Web Games ↓
@@ -110,9 +129,7 @@ const downloadableGamesJson = JSON.stringify(
                                     rel="noopener noreferrer"
                                     class="card-button"
                                 >
-                                    {game.data.platform === "itch"
-                                        ? "Play on itch.io →"
-                                        : "Download →"}
+                                    {`Download on ${new URL(game.data.url).hostname.split(".").slice(-2).join(".")}`}
                                 </a>
                             </div>
                         </article>
@@ -168,6 +185,7 @@ const downloadableGamesJson = JSON.stringify(
             const allGames = JSON.parse(dataEl.textContent || "[]");
             const grid = document.getElementById("downloadable-games-grid");
             const searchInput = document.getElementById("games-search");
+            const sortSelect = document.getElementById("games-sort");
             const loadMoreButton = document.getElementById("load-more-button");
             const loadMoreWrapper =
                 document.getElementById("load-more-wrapper");
@@ -177,6 +195,7 @@ const downloadableGamesJson = JSON.stringify(
             if (
                 !grid ||
                 !searchInput ||
+                !sortSelect ||
                 !loadMoreButton ||
                 !loadMoreWrapper ||
                 !gamesCount ||
@@ -188,56 +207,105 @@ const downloadableGamesJson = JSON.stringify(
 
             let visibleCount = GAMES_PER_PAGE;
             let currentSearchTerm = "";
+            let currentSort = "az";
 
-            function getMatchingIndices(searchTerm) {
+            function getSearchMatches(searchTerm: string) {
                 if (!searchTerm) {
-                    return allGames.map((_: any, i: number) => i);
+                    return new Set(allGames.map((_: any, i: number) => i));
                 }
                 const term = searchTerm.toLowerCase();
-                return allGames
-                    .map((game: any, i: number) => ({
-                        title: game.title.toLowerCase(),
-                        i,
-                    }))
-                    .filter((g: any) => g.title.includes(term))
-                    .map((g: any) => g.i);
+                return new Set(
+                    allGames
+                        .map((game: any, i: number) => ({
+                            title: game.title.toLowerCase(),
+                            i,
+                        }))
+                        .filter((g: any) => g.title.includes(term))
+                        .map((g: any) => g.i),
+                );
+            }
+
+            function getSortedIndices() {
+                const indices = allGames.map((_: any, i: number) => i);
+                return indices.sort((a: number, b: number) => {
+                    switch (currentSort) {
+                        case "za":
+                            return (allGames[b] as any).title.localeCompare(
+                                (allGames[a] as any).title,
+                            );
+                        case "newest": {
+                            const da = (allGames[a] as any).releaseDate || "";
+                            const db = (allGames[b] as any).releaseDate || "";
+                            if (!da && !db)
+                                return (allGames[a] as any).title.localeCompare(
+                                    (allGames[b] as any).title,
+                                );
+                            if (!da) return 1;
+                            if (!db) return -1;
+                            return db.localeCompare(da);
+                        }
+                        case "oldest": {
+                            const da = (allGames[a] as any).releaseDate || "";
+                            const db = (allGames[b] as any).releaseDate || "";
+                            if (!da && !db)
+                                return (allGames[a] as any).title.localeCompare(
+                                    (allGames[b] as any).title,
+                                );
+                            if (!da) return 1;
+                            if (!db) return -1;
+                            return da.localeCompare(db);
+                        }
+                        default:
+                            return (allGames[a] as any).title.localeCompare(
+                                (allGames[b] as any).title,
+                            );
+                    }
+                });
             }
 
             function render() {
-                const matchingIndices = getMatchingIndices(currentSearchTerm);
+                const sortedIndices = getSortedIndices();
+                const searchMatches = getSearchMatches(currentSearchTerm);
+
+                const matchingSorted = sortedIndices.filter((i: number) =>
+                    searchMatches.has(i),
+                );
                 const isSearching = currentSearchTerm.length > 0;
 
-                let visibleIndices;
-                if (isSearching) {
-                    visibleIndices = matchingIndices;
-                } else {
-                    visibleIndices = matchingIndices.slice(0, visibleCount);
-                }
+                const visibleSorted = isSearching
+                    ? matchingSorted
+                    : matchingSorted.slice(0, visibleCount);
 
-                cards.forEach((card, index) => {
-                    const isMatch = matchingIndices.includes(index);
-                    const isVisible = visibleIndices.includes(index);
+                const visibleSet = new Set(visibleSorted);
 
-                    if (isMatch && isVisible) {
-                        card.style.display = "";
+                cards.forEach((card) => {
+                    const gameIndex = parseInt(
+                        (card as HTMLElement).dataset.gameIndex || "0",
+                    );
+                    if (visibleSet.has(gameIndex)) {
+                        (card as HTMLElement).style.display = "";
+                        (card as HTMLElement).style.order = matchingSorted
+                            .indexOf(gameIndex)
+                            .toString();
                     } else {
-                        card.style.display = "none";
+                        (card as HTMLElement).style.display = "none";
+                        (card as HTMLElement).style.order = "";
                     }
                 });
 
-                if (isSearching || matchingIndices.length <= visibleCount) {
+                if (isSearching || matchingSorted.length <= visibleCount) {
                     loadMoreWrapper.style.display = "none";
                 } else {
                     loadMoreWrapper.style.display = "flex";
                 }
 
                 const shown = isSearching
-                    ? matchingIndices.length
-                    : Math.min(visibleCount, matchingIndices.length);
-                gamesCount.textContent = `Showing ${shown} of ${matchingIndices.length} games`;
+                    ? matchingSorted.length
+                    : Math.min(visibleCount, matchingSorted.length);
+                gamesCount.textContent = `Showing ${shown} of ${matchingSorted.length} games`;
 
                 noResults.style.display =
-                    matchingIndices.length === 0 ? "block" : "none";
+                    matchingSorted.length === 0 ? "block" : "none";
             }
 
             // Remove old listeners by cloning elements
@@ -245,6 +313,11 @@ const downloadableGamesJson = JSON.stringify(
                 true,
             ) as HTMLInputElement;
             searchInput.parentNode?.replaceChild(newSearchInput, searchInput);
+
+            const newSortSelect = sortSelect.cloneNode(
+                true,
+            ) as HTMLSelectElement;
+            sortSelect.parentNode?.replaceChild(newSortSelect, sortSelect);
 
             const newLoadMoreButton = loadMoreButton.cloneNode(
                 true,
@@ -266,13 +339,20 @@ const downloadableGamesJson = JSON.stringify(
                 }, 200);
             });
 
+            newSortSelect.addEventListener("change", (e) => {
+                currentSort = (e.target as HTMLSelectElement).value;
+                visibleCount = GAMES_PER_PAGE;
+                render();
+            });
+
             newLoadMoreButton.addEventListener("click", () => {
                 visibleCount += GAMES_PER_PAGE;
                 render();
             });
 
-            // Restore any search value that was in the input
+            // Restore any search/sort values
             currentSearchTerm = newSearchInput.value.trim();
+            currentSort = newSortSelect.value;
 
             render();
         }
@@ -392,7 +472,7 @@ const downloadableGamesJson = JSON.stringify(
 
     .search-input {
         width: 100%;
-        padding: 0.7rem 1rem 0.7rem 2.75rem;
+        padding: 0.7rem 7rem 0.7rem 2.75rem;
         background-color: var(--card-bg);
         border: 1px solid var(--border);
         border-radius: 8px;
@@ -411,6 +491,40 @@ const downloadableGamesJson = JSON.stringify(
     .search-input:focus {
         border-color: var(--primary);
         box-shadow: 0 0 0 3px rgba(254, 44, 0, 0.15);
+    }
+
+    /* Sort */
+    .sort-select {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 0.45rem 1.5rem 0.45rem 0.6rem;
+        background-color: transparent;
+        border: none;
+        border-left: 1px solid var(--border);
+        border-radius: 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23FE2C00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.4rem center;
+    }
+
+    .sort-select:hover {
+        color: var(--primary);
+        border-left-color: var(--primary);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23FE2C00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    .sort-select:focus {
+        color: var(--primary);
+        border-left-color: var(--primary);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23FE2C00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     }
 
     /* No results */
