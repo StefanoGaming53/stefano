@@ -1,0 +1,27 @@
+/* ── Site-wide Custom Cursors ── */
+
+/* Default cursor - arrow */
+html,
+body {
+    cursor:
+        url("/images/cursors/arrow.png") 0 0,
+        auto !important;
+}
+
+/* Hand cursor for interactive elements */
+a,
+a *,
+button,
+button *,
+[role="button"],
+[role="button"] *,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+select,
+summary,
+.hamburger {
+    cursor:
+        url("/images/cursors/hand.png") 0 0,
+        pointer !important;
+}

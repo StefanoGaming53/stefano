@@ -246,11 +246,11 @@ const { Content } = await render(about);
         border-radius: 6px;
         font-weight: 600;
         font-size: 1rem;
-        transition: opacity 0.2s ease;
+        transition: background-color 0.2s ease;
     }
 
     .callout__button:hover {
-        opacity: 0.85;
+        background-color: #8a1800;
     }
 
     .avatar-scroll-zone {
@@ -349,31 +349,33 @@ const { Content } = await render(about);
         border-radius: 4px;
         font-weight: 500;
         text-align: center;
-        transition: opacity 0.2s ease;
+        transition: background-color 0.2s ease;
     }
 
     .card__link:hover {
-        opacity: 0.85;
+        background-color: #8a1800;
     }
 </style>
 
 <script>
-    document
-        .querySelectorAll(".card[data-has-video='true']")
-        .forEach((card) => {
-            const videoDiv = card.querySelector(".card__media-video");
-            if (!videoDiv) return;
-            const iframe = videoDiv.querySelector("iframe");
-            if (!iframe) return;
+    function initVideoOverlays() {
+        document
+            .querySelectorAll(".card[data-has-video='true']")
+            .forEach((card) => {
+                const videoDiv = card.querySelector(".card__media-video");
+                if (!videoDiv) return;
+                const iframe = videoDiv.querySelector("iframe");
+                if (!iframe) return;
 
-            card.addEventListener("mouseenter", () => {
-                iframe.src = videoDiv.dataset.src || "";
-            });
+                card.addEventListener("mouseenter", () => {
+                    iframe.src = videoDiv.dataset.src || "";
+                });
 
-            card.addEventListener("mouseleave", () => {
-                iframe.src = "";
+                card.addEventListener("mouseleave", () => {
+                    iframe.src = "";
+                });
             });
-        });
+    }
 
     function initAvatarSticky() {
         const avatar = document.querySelector(".about__avatar");
@@ -458,6 +460,8 @@ const { Content } = await render(about);
         );
     }
 
+    document.addEventListener("astro:page-load", initVideoOverlays);
     document.addEventListener("astro:page-load", initAvatarSticky);
+    initVideoOverlays();
     initAvatarSticky();
 </script>
