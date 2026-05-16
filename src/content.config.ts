@@ -39,4 +39,17 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { games, featured, tutorial, about };
+const links = defineCollection({
+  loader: glob({ pattern: "links.md", base: "./src/data" }),
+  schema: z.object({
+    links: z.array(
+      z.object({
+        title: z.string(),
+        url: z.string().url(),
+        color: z.string(),
+      }),
+    ),
+  }),
+});
+
+export const collections = { games, featured, tutorial, about, links };

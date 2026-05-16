@@ -1,43 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
 
-const links = [
-    {
-        name: "YouTube",
-        url: "https://www.youtube.com/@Stefano_Gaming",
-        color: "#FF0000",
-    },
-    {
-        name: "Twitch",
-        url: "https://www.twitch.tv/stefano_gamingtv",
-        color: "#9146FF",
-    },
-    {
-        name: "Twitter / X",
-        url: "https://x.com/StefanoGaming53",
-        color: "#FFFFFF",
-    },
-    {
-        name: "Itch.io",
-        url: "https://stefano-gaming.itch.io",
-        color: "#FA5C5C",
-    },
-    {
-        name: "Steam",
-        url: "https://steamcommunity.com/profiles/76561198966597091/",
-        color: "#66C0F4",
-    },
-    {
-        name: "GDevelop",
-        url: "https://gd.games/Stefano_Gaming",
-        color: "#3E9A3E",
-    },
-    {
-        name: "Spotify",
-        url: "https://open.spotify.com/artist/52IwESXoFNackotDmAFHSG?si=N-vuK82TSFC3tooJT_lhaA",
-        color: "#1DB954",
-    },
-];
+const linksData = await getCollection("links");
+const links = linksData[0]?.data.links ?? [];
 
 function getFaviconUrl(pageUrl: string, size = 64): string {
     const origin = new URL(pageUrl).origin;
@@ -72,13 +38,13 @@ function getFaviconUrl(pageUrl: string, size = 64): string {
                         <span class="link-tile__icon">
                             <img
                                 src={getFaviconUrl(link.url)}
-                                alt={link.name}
+                                alt={link.title}
                                 width="24"
                                 height="24"
                                 loading="lazy"
                             />
                         </span>
-                        <span class="link-tile__name">{link.name}</span>
+                        <span class="link-tile__name">{link.title}</span>
                         <svg
                             class="link-tile__arrow"
                             viewBox="0 0 24 24"
