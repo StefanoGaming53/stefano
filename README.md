@@ -1,43 +1,18 @@
-# Astro Starter Kit: Minimal
+# Stefano Gaming Website
 
-```sh
-npm create astro@latest -- --template minimal
-```
+The personal website for **Stefano Gaming** — an indie game developer, musician, and artist. 🎮🎵
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## About Stefano
 
-## 🚀 Project Structure
+Stefano is a creative who mostly makes content on YouTube. He builds games using GDevelop and makes all his own art, music, and sounds from scratch. His games are available on itch.io, Steam, and GDevelop.
 
-Inside of your Astro project, you'll see the following folders and files:
+## The Website
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+This site serves as Stefano's central hub, featuring:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- **Home** — Featured games with video previews and an about section
+- **Games** — Browse and search all released games
+- **Download Tutorial** — Step-by-step guide for downloading games
+- **Links** — All of Stefano's social platforms in one place (YouTube, Twitch, Twitter/X, Spotify, and more)
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Built with [Astro](https://astro.build) as a static site.
