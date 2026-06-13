@@ -132,7 +132,9 @@ const currentPath = Astro.url.pathname;
                 const hamburger = document.getElementById("hamburger");
                 const mobileNav = document.getElementById("mobile-nav");
 
-                if (hamburger && mobileNav) {
+                if (hamburger && mobileNav && !hamburger.dataset.initialized) {
+                    hamburger.dataset.initialized = "true";
+
                     hamburger.addEventListener("click", () => {
                         const isOpen = mobileNav.classList.toggle("open");
                         hamburger.classList.toggle("open");
