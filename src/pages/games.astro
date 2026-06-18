@@ -124,12 +124,26 @@ const downloadableGamesJson = JSON.stringify(
                             <div class="card-content">
                                 <h3 class="card-title">{game.data.title}</h3>
                                 <a
-                                    href={game.data.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    href={
+                                        game.data.downloadFile
+                                            ? `/downloads/${game.id}`
+                                            : game.data.url
+                                    }
+                                    target={
+                                        game.data.downloadFile
+                                            ? undefined
+                                            : "_blank"
+                                    }
+                                    rel={
+                                        game.data.downloadFile
+                                            ? undefined
+                                            : "noopener noreferrer"
+                                    }
                                     class="card-button"
                                 >
-                                    {`Download on ${new URL(game.data.url).hostname.split(".").slice(-2).join(".")}`}
+                                    {game.data.downloadFile
+                                        ? "Download"
+                                        : `Download on ${new URL(game.data.url).hostname.split(".").slice(-2).join(".")}`}
                                 </a>
                             </div>
                         </article>

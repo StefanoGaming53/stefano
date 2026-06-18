@@ -10,6 +10,9 @@ const games = defineCollection({
     url: z.string().url(),
     description: z.string().optional(),
     releaseDate: z.string().optional(),
+    // When set, the game is served from a themed /downloads/[slug] page
+    // with this file as the direct download (e.g. "/downloads/acceptance.exe").
+    downloadFile: z.string().optional(),
   }),
 });
 

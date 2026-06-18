@@ -1,0 +1,241 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+    const games = await getCollection("games");
+    return games.map((game) => ({
+        params: { slug: game.id },
+        props: { game },
+    }));
+}
+
+interface Props {
+    game: CollectionEntry<"games">;
+}
+
+const { game } = Astro.props;
+const { title, image, url, description, releaseDate, downloadFile } =
+    game.data;
+
+// Decide what the primary download action does.
+// If a local download file is configured, offer it as a direct download;
+// otherwise fall back to the external url (e.g. itch.io / Drive).
+const hasLocalDownload = Boolean(downloadFile);
+const downloadHref = downloadFile || url;
+const downloadLabel = hasLocalDownload
+    ? "Download for Windows"
+    : `Download on ${new URL(url).hostname.split(".").slice(-2).join(".")}`;
+
+const releaseText = releaseDate
+    ? new Date(releaseDate).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+      })
+    : null;
+---
+
+<Layout title={`${title} - Download | Stefano Gaming`}>
+    <main class="download-page">
+        <a href="/games" class="back-link">← Back to Games</a>
+
+        <article class="download-card">
+            <div class="download-card__media">
+                {
+                    image ? (
+                        <img
+                            src={image}
+                            alt={title}
+                            class="download-card__image"
+                        />
+                    ) : (
+                        <div class="download-card__placeholder">
+                            {title.charAt(0)}
+                        </div>
+                    )
+                }
+            </div>
+
+            <div class="download-card__body">
+                <h1 class="download-card__title">{title}</h1>
+
+                {
+                    releaseText && (
+                        <p class="download-card__meta">
+                            Released {releaseText}
+                        </p>
+                    )
+                }
+
+                {
+                    description && (
+                        <p class="download-card__description">{description}</p>
+                    )
+                }
+
+                <div class="download-card__actions">
+                    <a
+                        href={downloadHref}
+                        class="download-button"
+                        download={hasLocalDownload ? true : undefined}
+                        target={hasLocalDownload ? undefined : "_blank"}
+                        rel={hasLocalDownload ? undefined : "noopener noreferrer"}
+                    >
+                        <span class="download-button__icon" aria-hidden="true"
+                            >⬇</span
+                        >
+                        {downloadLabel}
+                    </a>
+                </div>
+
+                {
+                    hasLocalDownload && (
+                        <p class="download-card__hint">
+                            Direct download — no installer, just run the file.
+                        </p>
+                    )
+                }
+            </div>
+        </article>
+    </main>
+</Layout>
+
+<style>
+    .download-page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+    }
+
+    .back-link {
+        display: inline-block;
+        color: var(--color-text-muted);
+        font-size: 0.9rem;
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+        transition: color 0.2s ease;
+    }
+
+    .back-link:hover {
+        color: var(--color-primary);
+    }
+
+    .download-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+        gap: 2.5rem;
+        align-items: center;
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        padding: 2rem;
+    }
+
+    .download-card__media {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--color-border);
+        background-color: #0a0a0a;
+    }
+
+    .download-card__image {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .download-card__placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        aspect-ratio: 3 / 4;
+        font-size: 4rem;
+        font-weight: 700;
+        color: var(--color-text-muted);
+    }
+
+    .download-card__title {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: var(--color-text);
+        line-height: 1.15;
+        margin-bottom: 0.5rem;
+    }
+
+    .download-card__meta {
+        color: var(--color-text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .download-card__description {
+        color: var(--color-text-muted);
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 1.75rem;
+    }
+
+    .download-card__actions {
+        margin-bottom: 0.75rem;
+    }
+
+    .download-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.9rem 1.75rem;
+        background-color: var(--color-primary);
+        color: #ffffff;
+        font-size: 1.05rem;
+        font-weight: 700;
+        text-decoration: none;
+        border-radius: 8px;
+        transition:
+            background-color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+        box-shadow: 0 6px 18px rgba(254, 44, 0, 0.25);
+    }
+
+    .download-button:hover {
+        background-color: var(--color-primary-hover);
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(254, 44, 0, 0.35);
+    }
+
+    .download-button:active {
+        transform: translateY(0);
+    }
+
+    .download-button__icon {
+        font-size: 1.1rem;
+        line-height: 1;
+    }
+
+    .download-card__hint {
+        color: var(--color-text-muted);
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+        .download-card {
+            grid-template-columns: 1fr;
+            gap: 1.75rem;
+            padding: 1.5rem;
+        }
+
+        .download-card__media {
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .download-card__title {
+            font-size: 1.75rem;
+        }
+    }
+</style>
