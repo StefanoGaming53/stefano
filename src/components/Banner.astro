@@ -1,0 +1,148 @@
+---
+import bannersData from "../data/banners.json";
+
+const banners = bannersData.banners;
+---
+
+<div id="site-banner" aria-hidden="true"></div>
+<script
+    type="application/json"
+    id="banner-config"
+    is:inline
+    set:html={JSON.stringify(banners)}
+/>
+
+<script>
+    interface BannerConfig {
+        title: string;
+        date: string;
+        repeat?: "yearly" | "none";
+        type?: "static" | "marquee";
+        text: string;
+        bgColor?: string;
+        textColor?: string;
+        duration?: number;
+    }
+
+    function initBanner() {
+        const configEl = document.getElementById("banner-config");
+        const bannerEl = document.getElementById("site-banner");
+        if (!configEl || !bannerEl) return;
+
+        let banners: BannerConfig[] = [];
+        try {
+            banners = JSON.parse(configEl.textContent || "[]");
+        } catch {
+            return;
+        }
+
+        const now = new Date();
+        const active = banners.find((b) => isBannerActive(b, now));
+
+        if (active) {
+            renderBanner(bannerEl, active);
+            bannerEl.style.display = "block";
+            bannerEl.setAttribute("aria-hidden", "false");
+        } else {
+            bannerEl.innerHTML = "";
+            bannerEl.style.display = "none";
+            bannerEl.setAttribute("aria-hidden", "true");
+        }
+    }
+
+    function isBannerActive(banner: BannerConfig, now: Date): boolean {
+        const parts = banner.date.split("-").map(Number);
+        const duration = banner.duration ?? 1;
+
+        let start: Date;
+        let end: Date;
+
+        if (banner.repeat === "yearly") {
+            const [month, day] = parts;
+            start = new Date(now.getFullYear(), month - 1, day);
+        } else {
+            const [year, month, day] = parts;
+            start = new Date(year, month - 1, day);
+        }
+
+        end = new Date(start);
+        end.setDate(end.getDate() + duration);
+
+        return now >= start && now < end;
+    }
+
+    function escapeHtml(str: string): string {
+        const div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function renderBanner(el: HTMLElement, banner: BannerConfig) {
+        const bg = banner.bgColor || "#fe2c00";
+        const color = banner.textColor || "#ffffff";
+        const text = escapeHtml(banner.text || "");
+
+        if (banner.type === "marquee") {
+            el.innerHTML = `
+                <div class="banner-marquee" style="background-color:${bg};color:${color}">
+                    <div class="banner-marquee__track">${text}&nbsp;&nbsp;&nbsp;&nbsp;${text}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                </div>
+            `;
+        } else {
+            el.innerHTML = `
+                <div class="banner-static" style="background-color:${bg};color:${color}">${text}</div>
+            `;
+        }
+    }
+
+    document.addEventListener("astro:page-load", initBanner);
+    initBanner();
+</script>
+
+<style is:global>
+    #site-banner {
+        display: none;
+    }
+
+    .banner-marquee {
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 0.5rem 0;
+    }
+
+    .banner-marquee__track {
+        display: inline-block;
+        white-space: nowrap;
+        font-weight: 700;
+        font-size: 0.9rem;
+        letter-spacing: 0.04em;
+        animation: banner-scroll 18s linear infinite;
+    }
+
+    .banner-marquee:hover .banner-marquee__track {
+        animation-play-state: paused;
+    }
+
+    @keyframes banner-scroll {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    .banner-static {
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.625rem 1rem;
+    }
+
+    @media (max-width: 640px) {
+        .banner-marquee__track,
+        .banner-static {
+            font-size: 0.8rem;
+        }
+    }
+</style>

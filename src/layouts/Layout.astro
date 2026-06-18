@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import Banner from "../components/Banner.astro";
 
 interface Props {
     title: string;
@@ -37,6 +38,7 @@ const currentPath = Astro.url.pathname;
         <link rel="stylesheet" href="/styles/cursors.css" />
     </head>
     <body class={bodyClass}>
+        <Banner />
         <header class="site-header">
             <div class="header-inner">
                 <a href="/" class="logo-link">
