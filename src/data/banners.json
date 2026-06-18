@@ -7,7 +7,9 @@
       "type": "marquee",
       "text": "🎉🎉 HAPPY BIRTHDAY STEFANO!! 🎉🎉",
       "bgColor": "#FF0000",
-      "textColor": "#FFFFFF"
+      "textColor": "#FFFFFF",
+      "duration": 1,
+      "speed": 18
     }
   ]
 }
