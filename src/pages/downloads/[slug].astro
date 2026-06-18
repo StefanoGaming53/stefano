@@ -15,8 +15,7 @@ interface Props {
 }
 
 const { game } = Astro.props;
-const { title, image, url, description, releaseDate, downloadFile } =
-    game.data;
+const { title, image, url, description, releaseDate, downloadFile } = game.data;
 
 // Decide what the primary download action does.
 // If a local download file is configured, offer it as a direct download;
@@ -25,7 +24,9 @@ const hasLocalDownload = Boolean(downloadFile);
 const downloadHref = downloadFile || url;
 const downloadLabel = hasLocalDownload
     ? "Download for Windows"
-    : `Download on ${new URL(url).hostname.split(".").slice(-2).join(".")}`;
+    : url
+      ? `Download on ${new URL(url).hostname.split(".").slice(-2).join(".")}`
+      : "Download";
 
 const releaseText = releaseDate
     ? new Date(releaseDate).toLocaleDateString("en-US", {
@@ -80,7 +81,9 @@ const releaseText = releaseDate
                         class="download-button"
                         download={hasLocalDownload ? true : undefined}
                         target={hasLocalDownload ? undefined : "_blank"}
-                        rel={hasLocalDownload ? undefined : "noopener noreferrer"}
+                        rel={hasLocalDownload
+                            ? undefined
+                            : "noopener noreferrer"}
                     >
                         <span class="download-button__icon" aria-hidden="true"
                             >⬇</span

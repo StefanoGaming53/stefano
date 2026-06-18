@@ -7,7 +7,7 @@ const games = defineCollection({
   schema: z.object({
     title: z.string(),
     image: z.string(),
-    url: z.string().url(),
+    url: z.string().url().optional(),
     description: z.string().optional(),
     releaseDate: z.string().optional(),
     // When set, the game is served from a themed /downloads/[slug] page

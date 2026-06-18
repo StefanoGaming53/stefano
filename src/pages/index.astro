@@ -62,7 +62,9 @@ const { Content } = await render(about);
                             rel="noopener noreferrer"
                             class="card__link"
                         >
-                            {`Download on ${new URL(game.data.url).hostname.split(".").slice(-2).join(".")}`}
+                            {game.data.url
+                                ? `Download on ${new URL(game.data.url).hostname.split(".").slice(-2).join(".")}`
+                                : "Download"}
                         </a>
                     </article>
                 ))

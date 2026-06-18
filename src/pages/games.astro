@@ -2,7 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
-function isBrowserGame(url: string): boolean {
+function isBrowserGame(url: string | undefined): boolean {
+    if (!url) return false;
     try {
         const hostname = new URL(url).hostname;
         return (
@@ -143,7 +144,9 @@ const downloadableGamesJson = JSON.stringify(
                                 >
                                     {game.data.downloadFile
                                         ? "Download"
-                                        : `Download on ${new URL(game.data.url).hostname.split(".").slice(-2).join(".")}`}
+                                        : game.data.url
+                                          ? `Download on ${new URL(game.data.url).hostname.split(".").slice(-2).join(".")}`
+                                          : "Download"}
                                 </a>
                             </div>
                         </article>
