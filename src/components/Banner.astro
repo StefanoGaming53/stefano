@@ -42,11 +42,9 @@ const banners = bannersData.banners;
 
         if (active) {
             renderBanner(bannerEl, active);
-            bannerEl.style.display = "block";
             bannerEl.setAttribute("aria-hidden", "false");
         } else {
             bannerEl.innerHTML = "";
-            bannerEl.style.display = "none";
             bannerEl.setAttribute("aria-hidden", "true");
         }
     }
@@ -78,21 +76,39 @@ const banners = bannersData.banners;
         return div.innerHTML;
     }
 
+    function escapeAttr(str: string): string {
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/"/g, "&quot;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+    }
+
+    // Repeat the text (with a gap) enough to overflow any viewport, using an
+    // even number of units so the -50% translate loop is seamless.
+    function buildMarqueeText(text: string): string {
+        const unit = text + "\u00A0\u00A0\u00A0\u00A0";
+        const minLen = 400;
+        let repeats = 1;
+        while (unit.length * repeats < minLen) repeats++;
+        if (repeats % 2 !== 0) repeats++;
+        return unit.repeat(repeats);
+    }
+
     function renderBanner(el: HTMLElement, banner: BannerConfig) {
         const bg = banner.bgColor || "#fe2c00";
         const color = banner.textColor || "#ffffff";
-        const text = escapeHtml(banner.text || "");
 
         if (banner.type === "marquee") {
             const speed = banner.speed ?? 18;
+            const marqueeText = buildMarqueeText(escapeAttr(banner.text || ""));
             el.innerHTML = `
-                <div class="banner-marquee" style="background-color:${bg};color:${color};--banner-duration:${speed}s">
-                    <div class="banner-marquee__track">${text}&nbsp;&nbsp;&nbsp;&nbsp;${text}&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                </div>
+                <div class="banner-marquee" data-text="${marqueeText}" style="background-color:${bg};color:${color};--banner-duration:${speed}s"></div>
             `;
         } else {
+            const staticText = escapeHtml(banner.text || "");
             el.innerHTML = `
-                <div class="banner-static" style="background-color:${bg};color:${color}">${text}</div>
+                <div class="banner-static" style="background-color:${bg};color:${color}">${staticText}</div>
             `;
         }
     }
@@ -103,25 +119,28 @@ const banners = bannersData.banners;
 
 <style is:global>
     #site-banner {
-        display: none;
+        width: 100%;
     }
 
     .banner-marquee {
+        width: 100%;
         overflow: hidden;
         white-space: nowrap;
         padding: 0.5rem 0;
     }
 
-    .banner-marquee__track {
+    .banner-marquee::before {
+        content: attr(data-text);
         display: inline-block;
         white-space: nowrap;
         font-weight: 700;
         font-size: 0.9rem;
         letter-spacing: 0.04em;
         animation: banner-scroll var(--banner-duration, 18s) linear infinite;
+        will-change: transform;
     }
 
-    .banner-marquee:hover .banner-marquee__track {
+    .banner-marquee:hover::before {
         animation-play-state: paused;
     }
 
@@ -135,6 +154,7 @@ const banners = bannersData.banners;
     }
 
     .banner-static {
+        width: 100%;
         text-align: center;
         font-weight: 600;
         font-size: 0.9rem;
@@ -142,7 +162,7 @@ const banners = bannersData.banners;
     }
 
     @media (max-width: 640px) {
-        .banner-marquee__track,
+        .banner-marquee::before,
         .banner-static {
             font-size: 0.8rem;
         }

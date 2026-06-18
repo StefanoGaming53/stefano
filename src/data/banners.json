@@ -8,15 +8,6 @@
       "text": "🎉🎉 HAPPY BIRTHDAY STEFANO!! 🎉🎉",
       "bgColor": "#FF0000",
       "textColor": "#FFFFFF"
-    },
-    {
-      "title": "generic announcement",
-      "date": "06-18",
-      "repeat": "yearly",
-      "type": "static",
-      "text": "Hello World",
-      "bgColor": "#FF0000",
-      "textColor": "#FFFFFF"
     }
   ]
 }
