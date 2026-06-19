@@ -1,7 +1,6 @@
 ---
-title: "Download Tutorial"
+title: Download Tutorial
 ---
-
 ## Step 1 — Go to the Games page and click a download link
 
 Head over to the **Games** page on this site. Browse the list of downloadable games and click the download link for whichever game you want to play.
@@ -56,4 +55,4 @@ Open the newly extracted folder. Inside you'll find the game files — look for 
 
 ![Running the game executable](/images/tutorial/step9.png)
 
-> **Note:** Some games are hosted on itch.io instead of Google Drive. For those, click the link on the Games page and use the **Download** button on the itch.io page.
+> **Note:** Some games are hosted on itch.io instead of Google Drive. For those, click the link on the Games page and use the **Download** button on the itch.io page..
