@@ -22,6 +22,7 @@ const {
     description,
     releaseDate,
     downloadFile,
+    downloads,
     author,
     genre,
     tags,
@@ -30,16 +31,50 @@ const {
 } = game.data;
 const { Content } = await render(game);
 
-// Decide what the primary download action does.
-// If a local download file is configured, offer it as a direct download;
-// otherwise fall back to the external url (e.g. itch.io / Drive).
-const hasLocalDownload = Boolean(downloadFile);
-const downloadHref = downloadFile || url;
-const downloadLabel = hasLocalDownload
-    ? "Download for Windows"
-    : url
-      ? `Download on ${new URL(url).hostname.split(".").slice(-2).join(".")}`
-      : "Download";
+// Build a normalized list of download options shown on the page.
+// Each entry renders as its own button:
+//   - `platform` is the label shown ("Windows", "macOS", "Linux", ...) for
+//     local direct downloads; empty string for a single external link.
+//   - `isLocal` distinguishes a direct file download from an external link.
+//   - `externalLabel` holds the pretty hostname used for external links.
+interface DownloadOption {
+    platform: string;
+    href: string;
+    isLocal: boolean;
+    externalLabel?: string;
+}
+
+let downloadOptions: DownloadOption[] = [];
+
+if (downloads && Object.keys(downloads).length > 0) {
+    // Per-platform direct downloads (takes precedence).
+    downloadOptions = Object.entries(downloads).map(([platform, href]) => ({
+        platform,
+        href,
+        isLocal: true,
+    }));
+} else if (downloadFile) {
+    // Single-file shorthand (backward compatible).
+    const platform = (platforms && platforms[0]) || "Windows";
+    downloadOptions = [{ platform, href: downloadFile, isLocal: true }];
+} else if (url) {
+    const externalLabel = new URL(url).hostname.split(".").slice(-2).join(".");
+    downloadOptions = [
+        { platform: "", href: url, isLocal: false, externalLabel },
+    ];
+}
+
+const hasDownloadOptions = downloadOptions.length > 0;
+const hasLocalDownload = downloadOptions.some((o) => o.isLocal);
+const hasMultipleDownloads = downloadOptions.length > 1;
+
+// Button label for a single download option.
+function labelFor(option: DownloadOption): string {
+    if (!option.isLocal) {
+        return `Download on ${option.externalLabel}`;
+    }
+    return `Download for ${option.platform}`;
+}
 
 const releaseText = releaseDate
     ? new Date(releaseDate).toLocaleDateString("en-US", {
@@ -53,12 +88,24 @@ const releaseText = releaseDate
 const hasBody = Boolean(game.body && game.body.trim());
 
 // itch.io-style "More information" card.
-// Platforms default to Windows for direct downloads when not specified.
-const resolvedPlatforms =
-    platforms ?? (hasLocalDownload ? ["Windows"] : undefined);
+// When platform-specific downloads exist, their keys are the source of truth
+// for the listed platforms (unless `platforms` is set explicitly).
+const downloadPlatformKeys = downloads
+    ? Object.keys(downloads)
+    : downloadFile
+      ? [(platforms && platforms[0]) || "Windows"]
+      : undefined;
+const resolvedPlatforms = platforms ?? downloadPlatformKeys;
 const hasInfo = Boolean(
     resolvedPlatforms || author || genre || tags || contentInfo,
 );
+
+// Convenience: the meta chips shown beneath the title.
+const metaChips: string[] = [];
+if (releaseText) metaChips.push(`Released ${releaseText}`);
+if (resolvedPlatforms && resolvedPlatforms.length > 0) {
+    metaChips.push(resolvedPlatforms.join(" / "));
+}
 ---
 
 <Layout title={`${title} - Download | Stefano Gaming`}>
@@ -83,30 +130,170 @@ const hasInfo = Boolean(
                 <h1 class="game-hero__title">{title}</h1>
 
                 <div class="game-hero__meta">
-                    {releaseText && <span>Released {releaseText}</span>}
-                    {hasLocalDownload && <span>Windows</span>}
+                    {metaChips.map((chip, i) => <span>{chip}</span>)}
                 </div>
 
                 {description && <p class="game-hero__tagline">{description}</p>}
 
                 <div class="game-hero__actions">
-                    <a
-                        href={downloadHref}
-                        class="download-button"
-                        download={hasLocalDownload ? true : undefined}
-                        target={hasLocalDownload ? undefined : "_blank"}
-                        rel={hasLocalDownload
-                            ? undefined
-                            : "noopener noreferrer"}
-                    >
-                        <span class="download-button__icon" aria-hidden="true"
-                            >⬇</span
-                        >
-                        {downloadLabel}
-                    </a>
+                    {
+                        hasDownloadOptions && hasMultipleDownloads ? (
+                            <div class="download-group hero-platforms">
+                                {downloadOptions.map((option) => (
+                                    <a
+                                        href={option.href}
+                                        class="download-button"
+                                        data-platform={option.platform}
+                                        hidden
+                                        download={
+                                            option.isLocal ? true : undefined
+                                        }
+                                        target={
+                                            option.isLocal
+                                                ? undefined
+                                                : "_blank"
+                                        }
+                                        rel={
+                                            option.isLocal
+                                                ? undefined
+                                                : "noopener noreferrer"
+                                        }
+                                    >
+                                        <span
+                                            class="download-button__icon"
+                                            aria-hidden="true"
+                                        >
+                                            ⬇
+                                        </span>
+                                        {labelFor(option)}
+                                    </a>
+                                ))}
+                            </div>
+                        ) : hasDownloadOptions ? (
+                            <a
+                                href={downloadOptions[0].href}
+                                class="download-button"
+                                download={
+                                    downloadOptions[0].isLocal
+                                        ? true
+                                        : undefined
+                                }
+                                target={
+                                    downloadOptions[0].isLocal
+                                        ? undefined
+                                        : "_blank"
+                                }
+                                rel={
+                                    downloadOptions[0].isLocal
+                                        ? undefined
+                                        : "noopener noreferrer"
+                                }
+                            >
+                                <span
+                                    class="download-button__icon"
+                                    aria-hidden="true"
+                                >
+                                    ⬇
+                                </span>
+                                {labelFor(downloadOptions[0])}
+                            </a>
+                        ) : null
+                    }
                 </div>
             </div>
         </header>
+
+        {
+            /*
+          Client-side platform detection: in the hero above we only reveal the
+          download button matching the visitor's OS. The buttons start hidden
+          (so there's no flash of other platforms) and this script unhides the
+          matching one. `<noscript>` ensures all buttons remain reachable when
+          JavaScript is disabled. Runs only when multiple platforms exist.
+        */
+        }
+        <noscript
+            ><style is:inline>
+                .hero-platforms .download-button {
+                    display: inline-flex !important;
+                }
+            </style></noscript
+        >
+        <script is:inline>
+            (function () {
+                var buttons = Array.prototype.slice.call(
+                    document.querySelectorAll(
+                        ".hero-platforms [data-platform]",
+                    ),
+                );
+                if (!buttons.length) return;
+
+                var ua = (
+                    navigator.userAgent ||
+                    navigator.platform ||
+                    ""
+                ).toLowerCase();
+
+                var os = null;
+                if (ua.indexOf("win") >= 0) os = "windows";
+                else if (
+                    ua.indexOf("mac") >= 0 ||
+                    ua.indexOf("iphone") >= 0 ||
+                    ua.indexOf("ipad") >= 0 ||
+                    ua.indexOf("ipod") >= 0
+                )
+                    os = "mac";
+                else if (
+                    ua.indexOf("linux") >= 0 ||
+                    ua.indexOf("x11") >= 0 ||
+                    ua.indexOf("cros") >= 0
+                )
+                    os = "linux";
+                else if (ua.indexOf("android") >= 0) os = "android";
+
+                function canon(key) {
+                    var k = (key || "").toLowerCase();
+                    if (k.indexOf("win") >= 0) return "windows";
+                    if (
+                        k.indexOf("mac") >= 0 ||
+                        k.indexOf("osx") >= 0 ||
+                        k.indexOf("os x") >= 0
+                    )
+                        return "mac";
+                    if (k.indexOf("linux") >= 0 || k.indexOf("unix") >= 0)
+                        return "linux";
+                    if (k.indexOf("android") >= 0) return "android";
+                    if (
+                        k.indexOf("ios") >= 0 ||
+                        k.indexOf("iphone") >= 0 ||
+                        k.indexOf("ipad") >= 0
+                    )
+                        return "ios";
+                    if (k.indexOf("web") >= 0) return "web";
+                    return null;
+                }
+
+                var match = null;
+                buttons.forEach(function (btn) {
+                    if (os && canon(btn.getAttribute("data-platform")) === os)
+                        match = btn;
+                });
+
+                if (!match) {
+                    // No exact match: prefer Windows, then the first option,
+                    // so the hero never appears empty.
+                    match =
+                        buttons.filter(function (b) {
+                            return (
+                                canon(b.getAttribute("data-platform")) ===
+                                "windows"
+                            );
+                        })[0] || buttons[0];
+                }
+
+                if (match) match.removeAttribute("hidden");
+            })();
+        </script>
 
         <!-- Middle: markdown body content (blog-post style) -->
         {
@@ -121,21 +308,62 @@ const hasInfo = Boolean(
         <section class="game-cta">
             <div class="game-cta__inner">
                 <h2 class="game-cta__title">Ready to play?</h2>
-                <p class="game-cta__text">
-                    Grab {title} and get started.
-                </p>
-                <a
-                    href={downloadHref}
-                    class="download-button"
-                    download={hasLocalDownload ? true : undefined}
-                    target={hasLocalDownload ? undefined : "_blank"}
-                    rel={hasLocalDownload ? undefined : "noopener noreferrer"}
-                >
-                    <span class="download-button__icon" aria-hidden="true"
-                        >⬇</span
-                    >
-                    {downloadLabel}
-                </a>
+                <p class="game-cta__text">Grab {title} and get started.</p>
+                {
+                    hasDownloadOptions && hasMultipleDownloads ? (
+                        <div class="download-group">
+                            {downloadOptions.map((option) => (
+                                <a
+                                    href={option.href}
+                                    class="download-button"
+                                    download={option.isLocal ? true : undefined}
+                                    target={
+                                        option.isLocal ? undefined : "_blank"
+                                    }
+                                    rel={
+                                        option.isLocal
+                                            ? undefined
+                                            : "noopener noreferrer"
+                                    }
+                                >
+                                    <span
+                                        class="download-button__icon"
+                                        aria-hidden="true"
+                                    >
+                                        ⬇
+                                    </span>
+                                    {labelFor(option)}
+                                </a>
+                            ))}
+                        </div>
+                    ) : hasDownloadOptions ? (
+                        <a
+                            href={downloadOptions[0].href}
+                            class="download-button"
+                            download={
+                                downloadOptions[0].isLocal ? true : undefined
+                            }
+                            target={
+                                downloadOptions[0].isLocal
+                                    ? undefined
+                                    : "_blank"
+                            }
+                            rel={
+                                downloadOptions[0].isLocal
+                                    ? undefined
+                                    : "noopener noreferrer"
+                            }
+                        >
+                            <span
+                                class="download-button__icon"
+                                aria-hidden="true"
+                            >
+                                ⬇
+                            </span>
+                            {labelFor(downloadOptions[0])}
+                        </a>
+                    ) : null
+                }
             </div>
         </section>
 
@@ -296,6 +524,27 @@ const hasInfo = Boolean(
 
     .game-hero__actions {
         margin-top: 0.5rem;
+    }
+
+    /* Wraps multiple per-platform download buttons. */
+    .download-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .download-group .download-button {
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* `.download-button` sets `display: inline-flex`, which would override the
+       UA `[hidden]` rule. Keep `[hidden]` working so the platform-detection
+       script can reveal only the visitor's OS in the hero. */
+    .download-button[hidden] {
+        display: none;
     }
 
     /* ── Download button ── */

@@ -10,9 +10,14 @@ const games = defineCollection({
     url: z.string().url().optional(),
     description: z.string().optional(),
     releaseDate: z.string().optional(),
-    // When set, the game is served from a themed /downloads/[slug] page
-    // with this file as the direct download (e.g. "/downloads/acceptance.exe").
+    // Single-file shorthand: when set, the game is served from a themed
+    // /downloads/[slug] page with this file as the direct download
+    // (e.g. "/downloads/acceptance.exe"). Used when there is only one build.
     downloadFile: z.string().optional(),
+    // Per-platform direct download files, keyed by platform name.
+    // Takes precedence over `downloadFile`.
+    // e.g. { Windows: "/downloads/game.exe", macOS: "/downloads/game.dmg" }
+    downloads: z.record(z.string(), z.string()).optional(),
     // itch.io-style "More information" fields (all optional).
     author: z.string().optional(),
     genre: z.string().optional(),
