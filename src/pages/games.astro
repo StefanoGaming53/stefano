@@ -33,6 +33,8 @@ const downloadableGamesJson = JSON.stringify(
         image: game.data.image,
         url: game.data.url,
         releaseDate: game.data.releaseDate || null,
+        genre: game.data.genre || null,
+        tags: game.data.tags || [],
     })),
 );
 ---
@@ -84,7 +86,7 @@ const downloadableGamesJson = JSON.stringify(
                         type="text"
                         id="games-search"
                         class="search-input"
-                        placeholder="Search games..."
+                        placeholder="Search by title, genre, or tag..."
                         autocomplete="off"
                     />
                     <select id="games-sort" class="sort-select">
@@ -123,7 +125,16 @@ const downloadableGamesJson = JSON.stringify(
                                 />
                             </div>
                             <div class="card-content">
-                                <h3 class="card-title">{game.data.title}</h3>
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        {game.data.title}
+                                    </h3>
+                                    {game.data.genre && (
+                                        <span class="card-genre">
+                                            {game.data.genre}
+                                        </span>
+                                    )}
+                                </div>
                                 <a
                                     href={
                                         game.data.downloadFile
@@ -226,68 +237,87 @@ const downloadableGamesJson = JSON.stringify(
             let currentSearchTerm = "";
             let currentSort = "az";
 
-            function getSearchMatches(searchTerm: string) {
-                if (!searchTerm) {
-                    return new Set(allGames.map((_: any, i: number) => i));
-                }
+            // Returns gameIndex -> match rank when searching (lower = better):
+            //   0 = title match, 1 = genre match, 2 = tag-only match.
+            // Returns null when there is no search term (everything matches, no ranking).
+            function getSearchRanks(
+                searchTerm: string,
+            ): Map<number, number> | null {
+                if (!searchTerm) return null;
                 const term = searchTerm.toLowerCase();
-                return new Set(
-                    allGames
-                        .map((game: any, i: number) => ({
-                            title: game.title.toLowerCase(),
-                            i,
-                        }))
-                        .filter((g: any) => g.title.includes(term))
-                        .map((g: any) => g.i),
-                );
+                const ranks = new Map<number, number>();
+                allGames.forEach((game: any, i: number) => {
+                    const title = (game.title || "").toLowerCase();
+                    const genre = (game.genre || "").toLowerCase();
+                    const tags: string[] = Array.isArray(game.tags)
+                        ? game.tags.map((t: string) => t.toLowerCase())
+                        : [];
+                    let rank: number | null = null;
+                    if (title.includes(term)) rank = 0;
+                    else if (genre.includes(term)) rank = 1;
+                    else if (tags.some((t) => t.includes(term))) rank = 2;
+                    if (rank !== null) ranks.set(i, rank);
+                });
+                return ranks;
             }
 
-            function getSortedIndices() {
-                const indices = allGames.map((_: any, i: number) => i);
-                return indices.sort((a: number, b: number) => {
-                    switch (currentSort) {
-                        case "za":
-                            return (allGames[b] as any).title.localeCompare(
-                                (allGames[a] as any).title,
-                            );
-                        case "newest": {
-                            const da = (allGames[a] as any).releaseDate || "";
-                            const db = (allGames[b] as any).releaseDate || "";
-                            if (!da && !db)
-                                return (allGames[a] as any).title.localeCompare(
-                                    (allGames[b] as any).title,
-                                );
-                            if (!da) return 1;
-                            if (!db) return -1;
-                            return db.localeCompare(da);
-                        }
-                        case "oldest": {
-                            const da = (allGames[a] as any).releaseDate || "";
-                            const db = (allGames[b] as any).releaseDate || "";
-                            if (!da && !db)
-                                return (allGames[a] as any).title.localeCompare(
-                                    (allGames[b] as any).title,
-                                );
-                            if (!da) return 1;
-                            if (!db) return -1;
-                            return da.localeCompare(db);
-                        }
-                        default:
+            // Sort comparator driven by the current sort selection.
+            function compareBySort(a: number, b: number): number {
+                switch (currentSort) {
+                    case "za":
+                        return (allGames[b] as any).title.localeCompare(
+                            (allGames[a] as any).title,
+                        );
+                    case "newest": {
+                        const da = (allGames[a] as any).releaseDate || "";
+                        const db = (allGames[b] as any).releaseDate || "";
+                        if (!da && !db)
                             return (allGames[a] as any).title.localeCompare(
                                 (allGames[b] as any).title,
                             );
+                        if (!da) return 1;
+                        if (!db) return -1;
+                        return db.localeCompare(da);
                     }
-                });
+                    case "oldest": {
+                        const da = (allGames[a] as any).releaseDate || "";
+                        const db = (allGames[b] as any).releaseDate || "";
+                        if (!da && !db)
+                            return (allGames[a] as any).title.localeCompare(
+                                (allGames[b] as any).title,
+                            );
+                        if (!da) return 1;
+                        if (!db) return -1;
+                        return da.localeCompare(db);
+                    }
+                    default:
+                        return (allGames[a] as any).title.localeCompare(
+                            (allGames[b] as any).title,
+                        );
+                }
+            }
+
+            function getSortedIndices() {
+                return allGames
+                    .map((_: any, i: number) => i)
+                    .sort(compareBySort);
             }
 
             function render() {
-                const sortedIndices = getSortedIndices();
-                const searchMatches = getSearchMatches(currentSearchTerm);
-
-                const matchingSorted = sortedIndices.filter((i: number) =>
-                    searchMatches.has(i),
-                );
                 const isSearching = currentSearchTerm.length > 0;
+                const searchRanks = getSearchRanks(currentSearchTerm);
+
+                // When searching, favor title matches (rank 0) over genre (1)
+                // over tag-only (2), using the selected sort as a tiebreaker.
+                // When not searching, just use the selected sort order.
+                const matchingSorted = isSearching
+                    ? Array.from(searchRanks!.keys()).sort((a, b) => {
+                          const ra = searchRanks!.get(a)!;
+                          const rb = searchRanks!.get(b)!;
+                          if (ra !== rb) return ra - rb;
+                          return compareBySort(a, b);
+                      })
+                    : getSortedIndices();
 
                 const visibleSorted = isSearching
                     ? matchingSorted
@@ -652,6 +682,28 @@ const downloadableGamesJson = JSON.stringify(
         font-weight: 600;
         color: var(--text);
         line-height: 1.4;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .card-genre {
+        flex-shrink: 0;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--text);
+        background-color: rgba(254, 44, 0, 0.15);
+        border: 1px solid var(--primary);
+        border-radius: 999px;
+        padding: 0.15rem 0.55rem;
+        line-height: 1.5;
+        white-space: nowrap;
     }
 
     .card-button {
