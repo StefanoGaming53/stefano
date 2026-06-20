@@ -6,7 +6,10 @@ const tutorial = await getEntry("tutorial", "steps");
 const { Content } = await render(tutorial);
 ---
 
-<Layout title="Download Tutorial | Stefano Gaming">
+<Layout
+    title="Download Tutorial | Stefano Gaming"
+    description="Step-by-step guide to downloading and running Stefano Gaming's games on Windows, macOS, and Linux."
+>
     <div class="tutorial-container">
         <h1 class="tutorial-heading">{tutorial.data.title}</h1>
         <div class="tutorial-content">

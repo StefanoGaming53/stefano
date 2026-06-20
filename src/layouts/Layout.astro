@@ -1,13 +1,20 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import Banner from "../components/Banner.astro";
+import SEO from "../components/SEO.astro";
 
 interface Props {
     title: string;
     bodyClass?: string;
+    /** Description shown in search results and link embeds (Discord, etc.). */
+    description?: string;
+    /** Absolute or root-relative image used in link embeds. */
+    image?: string;
+    /** "website" for normal pages, "article" for per-game/per-content pages. */
+    type?: "website" | "article";
 }
 
-const { title, bodyClass = "" } = Astro.props;
+const { title, bodyClass = "", description, image, type } = Astro.props;
 
 const navLinks = [
     { href: "/", label: "Home" },
@@ -24,9 +31,11 @@ const currentPath = Astro.url.pathname;
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-            name="description"
-            content="Stefano Gaming - Indie Game Developer"
+        <SEO
+            title={title}
+            description={description}
+            image={image}
+            type={type}
         />
         <link rel="icon" type="image/png" href="/images/logo.png" />
         <title>{title}</title>

@@ -1,0 +1,80 @@
+---
+// Renders Open Graph + Twitter Card meta tags so links to this site render
+// rich preview embeds on Discord, Twitter/X, Slack, iMessage, etc.
+//
+// All URLs are made absolute (required by OG/Twitter) using `Astro.site`.
+// Make sure `site` is set in astro.config.mjs to your production domain.
+
+interface Props {
+    title: string;
+    description?: string;
+    image?: string;
+    /** "website" for normal pages, "article" for per-game/per-content pages. */
+    type?: "website" | "article";
+    /** Override the canonical URL (defaults to the current request path). */
+    canonical?: string;
+}
+
+const {
+    title,
+    description = "Stefano Gaming - Indie Game Developer, Musician, and Artist. Browse and download my games.",
+    image = "/images/og/site.png",
+    type = "website",
+    canonical,
+} = Astro.props;
+
+const site = Astro.site;
+if (!site) {
+    // No hard error in dev, but OG tags won't be absolute without `site`.
+    console.warn(
+        "[SEO] `site` is not set in astro.config.mjs — Open Graph URLs will not be absolute.",
+    );
+}
+
+function absolute(path: string): string {
+    if (!site) return path;
+    try {
+        if (/^https?:\/\//i.test(path)) return path;
+        return new URL(path, site).href;
+    } catch {
+        return path;
+    }
+}
+
+const canonicalUrl = (
+    canonical
+        ? absolute(canonical)
+        : site
+          ? new URL(Astro.url.pathname, site).href
+          : Astro.url.pathname
+)
+    .replace(/\.html$/, "")
+    .replace(/\/index$/, "/");
+
+const imageUrl = absolute(image);
+
+// og:title / twitter:title use the page title verbatim — pages already pass
+// a fully-branded title (e.g. "Games - Stefano Gaming").
+const fullTitle = title;
+---
+
+<!-- Primary Meta -->
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+<meta name="theme-color" content="#fe2c00" />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content="Stefano Gaming" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content="Stefano Gaming" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />

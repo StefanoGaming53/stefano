@@ -106,9 +106,25 @@ if (releaseText) metaChips.push(`Released ${releaseText}`);
 if (resolvedPlatforms && resolvedPlatforms.length > 0) {
     metaChips.push(resolvedPlatforms.join(" / "));
 }
+// Map the game's cover (e.g. /images/games/acceptance.png) to its generated
+// 1200x630 OG variant (e.g. /images/og/games/acceptance.png).
+const ogImage = image
+    ? `/images/og/games/${image
+          .split("/")
+          .pop()
+          ?.replace(/\.[^.]+$/, "")}.png`
+    : undefined;
 ---
 
-<Layout title={`${title} - Download | Stefano Gaming`}>
+<Layout
+    title={`${title} - Download | Stefano Gaming`}
+    description={description ||
+        `Download ${title} by Stefano Gaming.` +
+            (genre ? ` ${genre} game.` : "") +
+            (tags && tags.length ? ` ${tags.join(", ")}.` : "")}
+    image={ogImage}
+    type="article"
+>
     <main class="download-page">
         <a href="/games" class="back-link">← Back to Games</a>
 
