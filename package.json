@@ -15,6 +15,6 @@
     "og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
-    "astro": "^6.4.6"
+    "astro": "^7.1.0"
   }
 }
